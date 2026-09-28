@@ -1,0 +1,175 @@
+/* ---------- Dashboard ---------- */
+.dash-hero {
+  gap: 18px;
+}
+
+.dash-hero-main {
+  display: grid;
+  gap: 22px;
+  align-items: center;
+  justify-items: center;
+}
+
+@media (min-width: 720px) {
+  .dash-hero-main {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: stretch;
+  }
+}
+
+.dash-stats {
+  width: 100%;
+}
+
+.dash-goal {
+  display: grid;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.plan-card {
+  align-content: start;
+}
+
+.plan-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-weight: 700;
+  color: var(--accent-ink);
+}
+
+.dash-topics {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 1080px) {
+  .dash-topics {
+    grid-template-columns: 340px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .gel-card {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+.gel-legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.gel-legend .num {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--surface-3);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  margin-right: 6px;
+}
+
+.chapter-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  flex: none;
+}
+
+.chapter-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sub-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title chip'
+    'bar pct';
+  gap: 6px 12px;
+  align-items: center;
+  padding: 10px 12px;
+  margin-inline: -12px;
+  border-radius: var(--radius-m);
+  color: inherit;
+  text-decoration: none;
+}
+
+.sub-row:hover {
+  background: var(--surface-2);
+}
+
+.sub-row-title {
+  grid-area: title;
+  font-weight: 600;
+}
+
+.sub-row .chip {
+  grid-area: chip;
+  justify-self: end;
+}
+
+.sub-row-bar {
+  grid-area: bar;
+}
+
+.sub-row-pct {
+  grid-area: pct;
+  justify-self: end;
+  font-size: var(--fs-sm);
+  min-width: 3.2em;
+  text-align: right;
+}
+
+@media (min-width: 720px) {
+  .sub-row {
+    grid-template-columns: minmax(0, 2fr) 104px minmax(80px, 1fr) 3.4em;
+    grid-template-areas: 'title chip bar pct';
+  }
+
+  .sub-row .chip {
+    justify-self: start;
+  }
+}
+
+/* ---------- Übersichten (Üben/Fortschritt) ---------- */
+.hub-card {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.hub-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.hub-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.hub-arrow {
+  color: var(--ink-3);
+}
