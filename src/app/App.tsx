@@ -8,6 +8,8 @@ import { Topic } from '../pages/Topic';
 import { Glossary } from '../pages/Glossary';
 import { Curriculum } from '../pages/Curriculum';
 import { SourcesPage } from '../pages/SourcesPage';
+import { Lesson } from '../pages/Lesson';
+import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
 import { Shell } from './Shell';
@@ -55,7 +57,7 @@ function resolve(route: Route): ReactNode {
     case 'thema':
       return b ? <Topic key={b} id={b} /> : <Topics />;
     case 'lernen':
-      return <ComingSoon title="Lernmodus" />;
+      return b ? <Lesson key={`${b}:${route.query.abschnitt ?? ""}`} sub={b} start={route.query.abschnitt} /> : <Topics />;
     case 'glossar':
       return <Glossary key={route.query.sub ?? 'alle'} sub={route.query.sub} />;
     case 'karten':
@@ -73,8 +75,9 @@ function resolve(route: Route): ReactNode {
     case 'statistik':
       return <ComingSoon title="Statistik" />;
     case 'experimente':
+      return <ExperimentList />;
     case 'experiment':
-      return <ComingSoon title="Experimente" />;
+      return b ? <ExperimentPage key={b} id={b} /> : <ExperimentList />;
     case 'lehrplan':
       return <Curriculum />;
     case 'quellen':

@@ -162,6 +162,7 @@ export const genproduktA: ContentPack = {
           id: 'eigenschaften',
           title: 'Eigenschaften des Codes',
           blocks: [
+            { kind: 'widget', widget: 'codon-table', caption: 'Tippe ein Codon an: Viele Aminosäuren haben mehrere Codons (degeneriert), jedes Codon nur eine Bedeutung (eindeutig).', src: [p(10, 'Abb. 5')] },
             {
               kind: 'compare',
               columns: ['Bedeutung'],

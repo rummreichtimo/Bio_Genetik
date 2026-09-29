@@ -347,6 +347,12 @@ describe('Freitext-Bewertungsraster', () => {
     expect(bad).toEqual([]);
   });
 
+  it('„cs:“ steht nur ganz vorne in einem Muster', () => {
+    const bad: string[] = [];
+    for (const q of free) for (const src of allPatterns(q)) if (src.indexOf(CASE_PREFIX, 1) > 0) bad.push(`${q.id}: ${src}`);
+    expect(bad).toEqual([]);
+  });
+
   it('Muster ohne „cs:“ sind in Normalform geschrieben (klein, ohne Umlaute)', () => {
     const bad: string[] = [];
     for (const q of free)

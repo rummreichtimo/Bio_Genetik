@@ -621,7 +621,7 @@ export const humangenetik: ContentPack = {
       id: 'eg-q8', sub: 'erbgaenge', type: 'free', level: 2, err: 'mechanism', prov: 'pdf', src: [p(28)], operator: 'Erklären',
       prompt: 'Erkläre, warum Mukoviszidose rezessiv vererbt wird.',
       rubric: [
-        { id: 'aa', label: 'Sind beide Allele mutiert (aa), fehlen funktionierende Ionenkanäle → Krankheit', any: [['beide allele|homozygot|reinerbig|cs:\\baa\\b', 'ionenkanal|kanaele|krank|erkrank']], weight: 1 },
+        { id: 'aa', label: 'Sind beide Allele mutiert (aa), fehlen funktionierende Ionenkanäle → Krankheit', any: [['beide allele|homozygot|reinerbig', 'ionenkanal|kanaele|krank|erkrank'], ['cs:\\baa\\b', 'ionenkanal|kanaele|krank|erkrank']], weight: 1 },
         { id: 'hetero', label: 'Heterozygote (Aa) sind phänotypisch gesund', any: [['heterozygot|mischerbig', 'gesund|nicht krank|nicht erkrank|nicht betroffen|keine symptome'], ['cs:\\bAa\\b', 'gesund|nicht krank|nicht erkrank|nicht betroffen|keine symptome']], weight: 1 },
         { id: 'grund', label: 'Grund: Das nicht mutierte Allel A codiert für ausreichend funktionsfähige Ionenkanäle', any: [['ausreichend|genug|reicht|genuegt|intakte allel|nicht mutierte allel|gesunde allel|normale allel|funktionsfaehig']], weight: 1.5 },
         { id: 'traeger', label: 'Heterozygote können das Allel als Überträger (Konduktoren) weitergeben', any: [['uebertraeger|konduktor|weitergeb|weitervererb']], weight: 0.5 },
