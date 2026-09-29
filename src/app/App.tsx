@@ -10,6 +10,8 @@ import { Curriculum } from '../pages/Curriculum';
 import { SourcesPage } from '../pages/SourcesPage';
 import { Lesson } from '../pages/Lesson';
 import { CardSession, CardsHome } from '../pages/Cards';
+import { Quiz } from '../pages/Quiz';
+import { Mistakes } from '../pages/Mistakes';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
@@ -64,7 +66,7 @@ function resolve(route: Route): ReactNode {
     case 'karten':
       return b === 'lernen' && route.parts[2] ? <CardSession key={route.parts[2]} scope={route.parts[2]} /> : <CardsHome />;
     case 'quiz':
-      return <ComingSoon title="Quiz" />;
+      return <Quiz key={route.full} query={route.query} />;
     case 'klausur':
       return <ComingSoon title="Klausurtraining" />;
     case 'pruefung':
@@ -72,7 +74,7 @@ function resolve(route: Route): ReactNode {
     case 'schnell':
       return <ComingSoon title="5-Minuten-Modus" />;
     case 'fehler':
-      return <ComingSoon title="Fehleranalyse" />;
+      return <Mistakes />;
     case 'statistik':
       return <ComingSoon title="Statistik" />;
     case 'experimente':

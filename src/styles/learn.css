@@ -883,3 +883,17 @@
 @media (max-width: 480px) {
   .rate-btn kbd, .btn kbd { display: none; }
 }
+
+/* ---------- Quiz ---------- */
+.chip-field { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.checkbox { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.quiz-score { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+.quiz-score strong { font-family: var(--font-display); font-size: var(--fs-4xl); line-height: 1; }
+.result-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.result-item { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 8px; font-size: var(--fs-sm); }
+
+/* ---------- Fehleranalyse ---------- */
+.pattern { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 14px 16px; }
+.pattern-main { display: grid; gap: 4px; flex: 1 1 280px; min-width: 0; }
+.pattern-title { font-weight: 800; }
+.tag-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 2.5em; gap: 10px; align-items: center; font-size: var(--fs-sm); }
