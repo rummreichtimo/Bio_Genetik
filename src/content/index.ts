@@ -38,6 +38,7 @@ function termCards(terms: Term[]): Flashcard[] {
     back: t.simple ? `${t.def}\n\nEinfach erklärt: ${t.simple}` : t.def,
     src: t.src,
     prov: t.prov ?? 'pdf',
+    ...(t.ext ? { ext: t.ext } : {}),
   }));
 }
 

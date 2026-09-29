@@ -128,6 +128,8 @@ export interface Term {
   simple?: string;
   src: Src[];
   prov?: Provenance;
+  /** Quelle, wenn prov = 'ext' */
+  ext?: ExternalSource;
 }
 
 export type CardKind = 'begriff' | 'frage' | 'prozess' | 'ursache' | 'vergleich' | 'experiment' | 'abbildung';
@@ -140,6 +142,8 @@ export interface Flashcard {
   back: string;
   src: Src[];
   prov: Provenance;
+  /** Quelle, wenn prov = 'ext' */
+  ext?: ExternalSource;
   /** optional: Widget/Abbildung auf der Vorderseite (Abbildung → Erklärung) */
   figure?: FigureRef;
 }
@@ -252,9 +256,18 @@ export interface QLabel extends QBase {
 
 export interface QInput extends QBase {
   type: 'input';
-  /** akzeptierte Antworten; bei mode 'seq' werden Leerzeichen/Bindestriche ignoriert */
+  /**
+   * akzeptierte Antworten
+   *  - 'seq': nur Basenbuchstaben zählen (Leerzeichen, 5'/3', Bindestriche egal)
+   *  - 'aa': Aminosäuren im Dreibuchstabencode, z. B. "Met-Ala-Trp" (Stopp/Start werden ignoriert)
+   *  - 'number': Zahl mit Toleranz tol
+   */
   accept: string[];
-  mode: 'text' | 'seq' | 'number';
+  mode: 'text' | 'seq' | 'number' | 'aa';
+  /** bei mode 'number': erlaubte Abweichung */
+  tol?: number;
+  /** Einheit, die hinter dem Eingabefeld angezeigt wird */
+  unit?: string;
   placeholder?: string;
   /** Musterlösung (anzeigen) */
   solution: string;

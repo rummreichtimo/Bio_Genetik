@@ -6,7 +6,8 @@ import { buildPlan } from '../learning/plan';
 import { useProgress } from '../progress/store';
 import { Link } from '../app/router';
 import { ChapterGlyph, IconArrowRight, IconFlame } from '../ui/icons';
-import { Bar, ProgressRing, Stat, StatusChip, toneFor } from '../ui/primitives';
+import { Bar, ProgressRing, Stat, toneFor } from '../ui/primitives';
+import { SubtopicRow } from '../ui/topic';
 import { ThemenGel } from './ThemenGel';
 
 function ChapterBlock({ chapterId, progress }: { chapterId: string; progress: SubProgress[] }) {
@@ -34,19 +35,9 @@ function ChapterBlock({ chapterId, progress }: { chapterId: string; progress: Su
         </strong>
       </div>
       <div className="stack-s">
-        {subs.map((p) => {
-          const sub = getSubtopic(p.sub)!;
-          return (
-            <Link key={p.sub} to={`/thema/${p.sub}`} className="sub-row">
-              <span className="sub-row-title">{sub.title}</span>
-              <StatusChip status={p.status} />
-              <span className="sub-row-bar">
-                <Bar value={p.progress} thin label={`Fortschritt ${sub.title}`} />
-              </span>
-              <span className="num faint sub-row-pct">{Math.round(p.progress * 100)} %</span>
-            </Link>
-          );
-        })}
+        {subs.map((p) => (
+          <SubtopicRow key={p.sub} p={p} />
+        ))}
       </div>
     </section>
   );

@@ -3,6 +3,11 @@ import { ProgressProvider } from '../progress/store';
 import { Dashboard } from '../pages/Dashboard';
 import { Settings } from '../pages/Settings';
 import { PracticeHub, ProgressHub } from '../pages/Hubs';
+import { Topics } from '../pages/Topics';
+import { Topic } from '../pages/Topic';
+import { Glossary } from '../pages/Glossary';
+import { Curriculum } from '../pages/Curriculum';
+import { SourcesPage } from '../pages/SourcesPage';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
 import { Shell } from './Shell';
@@ -46,13 +51,13 @@ function resolve(route: Route): ReactNode {
     case undefined:
       return <Dashboard />;
     case 'themen':
-      return <ComingSoon title="Themen" />;
+      return <Topics />;
     case 'thema':
-      return <ComingSoon title="Thema" />;
+      return b ? <Topic key={b} id={b} /> : <Topics />;
     case 'lernen':
       return <ComingSoon title="Lernmodus" />;
     case 'glossar':
-      return <ComingSoon title="Glossar" />;
+      return <Glossary key={route.query.sub ?? 'alle'} sub={route.query.sub} />;
     case 'karten':
       return <ComingSoon title="Karteikarten" />;
     case 'quiz':
@@ -71,9 +76,9 @@ function resolve(route: Route): ReactNode {
     case 'experiment':
       return <ComingSoon title="Experimente" />;
     case 'lehrplan':
-      return <ComingSoon title="Lehrplan-Check" />;
+      return <Curriculum />;
     case 'quellen':
-      return <ComingSoon title="Hinweise zur Quelle" />;
+      return <SourcesPage />;
     case 'ueben':
       return <PracticeHub />;
     case 'fortschritt':
@@ -81,7 +86,6 @@ function resolve(route: Route): ReactNode {
     case 'einstellungen':
       return <Settings />;
     default:
-      void b;
       return <NotFound />;
   }
 }

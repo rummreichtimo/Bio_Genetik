@@ -168,7 +168,7 @@ export const SUBTOPICS: Subtopic[] = [
     title: 'Genregulation bei Eukaryoten',
     summary: 'Regulation auf Chromatin-, Transkriptions-, RNA-, Translations- und Proteinebene.',
     pages: [18, 19],
-    curriculum: ['2.2-hormone', '2.2-rnai', '2.1-spleissen'],
+    curriculum: ['2.2-hormone', '2.2-rnai', '2.1-spleissen', '2.2-histone'],
   },
   {
     id: 'epigenetik',
@@ -213,7 +213,7 @@ export const SUBTOPICS: Subtopic[] = [
     title: 'Genetische Beratung und Diagnostik',
     summary: 'Gentests, Pränataldiagnostik, Präimplantationsdiagnostik und personalisierte Medizin – mit ethischen Fragen.',
     pages: [26, 27],
-    curriculum: ['2.3-bioethik'],
+    curriculum: ['2.3-bioethik', '2.3-stammbaum', '2.4-personalisiert'],
   },
 ];
 

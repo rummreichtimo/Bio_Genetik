@@ -5,6 +5,9 @@
 }
 
 html {
+  /* Fokus und Sprungziele nicht unter der fixierten Kopf- bzw. Navigationsleiste verstecken */
+  scroll-padding-top: 76px;
+  scroll-padding-bottom: 96px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-size: 16px;
@@ -44,6 +47,9 @@ h4 {
   line-height: 1.15;
   letter-spacing: -0.01em;
   text-wrap: balance;
+  /* lange deutsche Komposita („Stammbaumanalyse“) dürfen auf dem Handy umbrechen */
+  hyphens: auto;
+  overflow-wrap: anywhere;
   margin: 0;
   color: var(--ink);
 }
@@ -51,6 +57,12 @@ h4 {
 h1 {
   font-size: var(--fs-3xl);
   font-weight: 800;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: var(--fs-2xl);
+  }
 }
 
 h2 {

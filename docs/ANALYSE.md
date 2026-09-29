@@ -56,6 +56,8 @@ Zuordnung PDF-Seite → Buchseiten (für Quellenangaben in der App):
 
 ## 1. Erkannte Themen und Unterthemen
 
+Endgültige Struktur der App: 6 Kapitel, 18 Unterthemen.
+
 1. **Molekulare Grundlagen der Genetik**
    1. DNA – Trägerin der Erbinformation (Entdeckung der Nucleinsäuren, Griffith, Avery)
    2. Molekularer Aufbau und Verpackung der DNA (Nucleotide, Basen, Doppelhelix, Chargaff-Regel, Nucleosomen)
@@ -71,14 +73,13 @@ Zuordnung PDF-Seite → Buchseiten (für Quellenangaben in der App):
    4. Translation bei Prokaryoten (tRNA, tRNA-Synthetase, Ribosom mit A-/P-/E-Stelle, Start/Verlängerung/Abbruch, Polysomen)
    5. Genexpression bei Eukaryoten (Mosaikgene, Prozessierung, alternatives Spleißen, posttranslationale Modifikation)
    6. Mutationen und ihre Folgen (Mutationstypen, Missense/stumm/Nonsense, Rasterschub, Bedeutung, Modifikationen)
-   7. Klausuraufgaben: Proteinbiosynthese und Antibiotika
+   - Die Klausuraufgaben „Proteinbiosynthese und Antibiotika“ (PDF 17) sind kein eigenes Unterthema, sondern Teil des Klausurtrainings.
 4. **Genregulation**
    1. Genregulation bei Eukaryoten (Ebenen, Chromatin, Transkriptionsfaktoren, Spleißen, RNA-Interferenz, Proteasom)
    2. Epigenetische Modifikationen (DNA-Methylierung, Histonmodifikation, Zwillinge, Bienen, Agouti-Mäuse, Hungerstudie, X-Inaktivierung)
 5. **Gentechnik: CRISPR/Cas**
-   1. Aufbau und natürliche Funktion (Virusabwehr in Bakterien)
-   2. CRISPR/Cas als Werkzeug (Guide-RNA, Einbringen, Reparaturmechanismen, Knock-out/Knock-in)
-   3. Anwendungen und Risiken (Pflanzen, Tiere, Mensch, Off-/On-Target, Gene Drive)
+   1. CRISPR/Cas: Aufbau und Virusabwehr (Spacer, Repeats, Cas, Abwehr in Bakterien)
+   2. Genomeditierung mit CRISPR/Cas (Guide-RNA, Einbringen, Reparaturmechanismen, Zucht, Mensch, Risiken, Gene Drive)
 6. **Humangenetik**
    1. Erbgänge des Menschen (autosomal-dominant/-rezessiv, X-chromosomal, Stammbaumanalyse)
    2. Genetische Beratung und Diagnostik (Gentests, Pränataldiagnostik, PID, personalisierte Medizin, Ethik)
@@ -277,6 +278,9 @@ Nicht enthaltene Inhalte werden in der App **nicht** als PDF-Inhalt ausgegeben. 
 2. ⚠️ **rps12-Sequenz (PDF 17):** In der mutierten DNA-Sequenz steht „UCC“. DNA enthält kein Uracil (PDF 10); gemeint ist vermutlich „TCC“.
 3. ⚠️ **Anzahl menschlicher Gene:** PDF 14 nennt „etwa 25 000 proteincodierende Gene“, PDF 19 „rund 20 000 Gene“.
 4. ⚠️ **Anteil gespleißter Gene:** PDF 14: „mindestens die Hälfte aller Gene“; PDF 19: „bis zu 50 Prozent aller Gene“ unterliegen alternativem Spleißen.
+5. ⚠️ **Stammbaumanalyse (PDF 25):** Im Gegenbeweis steht „das defekte Allel a“, bei einem dominanten Erbgang wäre das defekte Allel aber A (vgl. Abb. 3, PDF 28).
+
+Zusätzlich markiert die App eine Abweichung von anderen Fachquellen: Chorea Huntington führe „binnen weniger Jahre zum Tod“ (PDF 26); üblich genannt werden etwa 15–20 Jahre nach Symptombeginn (🌐, gekennzeichnet).
 
 Die App zeigt diese Hinweise an den passenden Stellen und entscheidet sie nicht stillschweigend.
 

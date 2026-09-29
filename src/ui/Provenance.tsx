@@ -63,6 +63,11 @@ export function ProvNote({ prov, title, src, ext, children }: ProvNoteProps) {
           {ext && <ExternalRef ext={ext} />}
         </div>
       )}
+      {prov !== 'ext' && ext && (
+        <div className="faint" style={{ fontSize: 'var(--fs-xs)' }}>
+          🌐 Enthält eine Angabe, die nicht aus deiner Quelle stammt. <ExternalRef ext={ext} />
+        </div>
+      )}
     </div>
   );
 }
