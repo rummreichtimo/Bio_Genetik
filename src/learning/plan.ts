@@ -3,6 +3,7 @@ import { DAY_MS } from '../lib/date';
 import type { ProgressState } from '../progress/types';
 import type { SubProgress } from './mastery';
 import { cardQueueInfo } from './stats';
+import { ERROR_META, errorPatterns } from './errors';
 
 export interface PlanItem {
   id: string;
@@ -70,6 +71,19 @@ export function buildPlan(state: ProgressState, progress: SubProgress[], now = D
     });
   }
 
+  // 3) Häufigstes offenes Fehlermuster, sonst schwächstes Thema
+  const pattern = errorPatterns(state, now).find((p) => p.open > 0 && p.count >= 2);
+  if (pattern && getSubtopic(pattern.sub)) {
+    items.push({
+      id: 'weak',
+      kicker: 'Fehlermuster',
+      title: `${getSubtopic(pattern.sub)!.title} → ${ERROR_META[pattern.tag].label}`,
+      text: ERROR_META[pattern.tag].tip,
+      cta: 'Gezielt üben',
+      to: `/quiz?sub=${pattern.sub}&fehler=${pattern.tag}`,
+    });
+    return items;
+  }
   // 3) Schwächstes Thema
   const weakest = progress
     .filter((p) => p.status === 'schwach' || (p.attempts >= 3 && (p.recentMastery ?? 1) < 0.7))

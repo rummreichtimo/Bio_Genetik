@@ -13,6 +13,7 @@ import { CardSession, CardsHome } from '../pages/Cards';
 import { Quiz } from '../pages/Quiz';
 import { Mistakes } from '../pages/Mistakes';
 import { Exam } from '../pages/Exam';
+import { Quick } from '../pages/Quick';
 import { KlausurList, KlausurTask } from '../pages/Klausur';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
@@ -74,7 +75,7 @@ function resolve(route: Route): ReactNode {
     case 'pruefung':
       return <Exam />;
     case 'schnell':
-      return <ComingSoon title="5-Minuten-Modus" />;
+      return <Quick />;
     case 'fehler':
       return <Mistakes />;
     case 'statistik':
