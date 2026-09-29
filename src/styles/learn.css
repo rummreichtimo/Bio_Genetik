@@ -897,3 +897,6 @@
 .pattern-main { display: grid; gap: 4px; flex: 1 1 280px; min-width: 0; }
 .pattern-title { font-weight: 800; }
 .tag-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 2.5em; gap: 10px; align-items: center; font-size: var(--fs-sm); }
+
+.ai-panel { display: grid; gap: 8px; padding: 12px; border-radius: var(--radius-m); background: var(--prov-ext-soft); }
+.ai-head { font-weight: 700; }

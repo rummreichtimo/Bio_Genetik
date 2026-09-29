@@ -9,6 +9,8 @@ import { ExplanationList, PROV_META, SourceTag } from '../ui/Provenance';
 import { Inline, Markdown } from '../ui/Markdown';
 import { MaterialView } from '../ui/Material';
 import { WidgetView } from '../widgets';
+import { AiPanel } from './AiPanel';
+import type { AiGrade } from '../ai/gradePrompt';
 
 function shuffled<T>(arr: T[], avoidIdentity = true): T[] {
   const a = [...arr];
@@ -43,6 +45,7 @@ export function QuestionView({ q, mode, onResult, exam, headingLevel = 3, hideMa
   const [resp, setResp] = useState<Response | null>(() => initialResponse(q));
   const [g, setG] = useState<Grade | null>(null);
   const [override, setOverride] = useState(false);
+  const [ai, setAi] = useState<AiGrade | null>(null);
   const pending = useRef<{ result: Result; score: number } | null>(null);
   const titleId = useId();
 
@@ -73,7 +76,7 @@ export function QuestionView({ q, mode, onResult, exam, headingLevel = 3, hideMa
   };
 
   const done = g !== null;
-  const shownResult: Result | null = g ? (override ? 'correct' : g.result) : null;
+  const shownResult: Result | null = g ? (override ? 'correct' : ai ? ai.result : g.result) : null;
   const H = headingLevel === 2 ? 'h2' : 'h3';
 
   return (
@@ -107,6 +110,19 @@ export function QuestionView({ q, mode, onResult, exam, headingLevel = 3, hideMa
 
       {done && !exam && g && (
         <Feedback q={q} g={g} resp={resp} result={shownResult!} overridden={override} onSelfCorrect={q.type === 'free' && g.result !== 'correct' && !override ? selfCorrect : undefined} />
+      )}
+      {done && !exam && g && q.type === 'free' && resp?.type === 'free' && !g.free?.tooShort && (
+        <AiPanel
+          q={q}
+          answer={resp.value}
+          onGraded={(a) => {
+            setAi(a);
+            if (!override) {
+              pending.current = { result: a.result, score: a.score };
+              onResult?.(a.result, { ...g, result: a.result, score: a.score });
+            }
+          }}
+        />
       )}
       {footer}
     </article>

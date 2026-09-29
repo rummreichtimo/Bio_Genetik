@@ -156,7 +156,8 @@ export function Settings() {
         </h2>
         <p className="muted">
           Standardmäßig bewertet die App deine Freitext-Antworten offline mit einem Bewertungsraster aus deiner PDF. Optional kann
-          Claude die Antworten bewerten – streng auf Grundlage der Quelle; externe Ergänzungen werden gekennzeichnet.
+          Claude eine Zweitbewertung abgeben – nur auf Knopfdruck und ausschließlich anhand des Bewertungsrasters und der Musterantwort aus
+          deiner PDF. Die KI führt keine neuen Inhalte ein.
         </p>
         <label className="switch">
           <input
