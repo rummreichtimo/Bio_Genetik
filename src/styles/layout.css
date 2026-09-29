@@ -381,3 +381,17 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Grid-/Flex-Kinder dürfen schmaler als ihr Inhalt werden (breite Abbildungen scrollen dann in ihrem eigenen Container) */
+.stack,
+.stack-s,
+.stack-l {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.stack > *,
+.stack-s > *,
+.stack-l > *,
+.card > * {
+  min-width: 0;
+}

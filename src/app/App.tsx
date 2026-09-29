@@ -12,6 +12,8 @@ import { Lesson } from '../pages/Lesson';
 import { CardSession, CardsHome } from '../pages/Cards';
 import { Quiz } from '../pages/Quiz';
 import { Mistakes } from '../pages/Mistakes';
+import { Exam } from '../pages/Exam';
+import { KlausurList, KlausurTask } from '../pages/Klausur';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
@@ -68,9 +70,9 @@ function resolve(route: Route): ReactNode {
     case 'quiz':
       return <Quiz key={route.full} query={route.query} />;
     case 'klausur':
-      return <ComingSoon title="Klausurtraining" />;
+      return b ? <KlausurTask key={b} id={b} /> : <KlausurList key={route.full} sub={route.query.sub} />;
     case 'pruefung':
-      return <ComingSoon title="Prüfungsmodus" />;
+      return <Exam />;
     case 'schnell':
       return <ComingSoon title="5-Minuten-Modus" />;
     case 'fehler':

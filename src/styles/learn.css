@@ -475,7 +475,7 @@
 .why-toggle { justify-self: start; }
 
 /* ---------- Material ---------- */
-.material { padding: 12px; border-radius: var(--radius-m); background: var(--surface-2); }
+.material { display: grid; grid-template-columns: minmax(0, 1fr); padding: 12px; border-radius: var(--radius-m); background: var(--surface-2); }
 .material figure { margin: 0; display: grid; gap: 6px; }
 .seq-lg { font-size: var(--fs-lg); letter-spacing: 0.08em; }
 
@@ -900,3 +900,34 @@
 
 .ai-panel { display: grid; gap: 8px; padding: 12px; border-radius: var(--radius-m); background: var(--prov-ext-soft); }
 .ai-head { font-weight: 700; }
+
+/* ---------- Prüfung & Klausur ---------- */
+.exam-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-3);
+  font-weight: 800;
+}
+.exam-timer.is-low { background: var(--bad-soft); color: var(--bad); }
+.exam-dots { display: flex; flex-wrap: wrap; gap: 4px; }
+.exam-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+.exam-dot.is-done { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+.exam-dot.is-current { outline: 3px solid var(--accent); outline-offset: 1px; }
+.exam-review { border-top: 1px solid var(--line); }
+.exam-review:first-child { border-top: 0; }
+.exam-review .list-item { border-top: 0; }
+.exam-solution { padding: 0 16px 16px 52px; }
+.klausur-material { background: var(--surface-2); }
