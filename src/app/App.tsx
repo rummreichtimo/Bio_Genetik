@@ -9,6 +9,7 @@ import { Glossary } from '../pages/Glossary';
 import { Curriculum } from '../pages/Curriculum';
 import { SourcesPage } from '../pages/SourcesPage';
 import { Lesson } from '../pages/Lesson';
+import { CardSession, CardsHome } from '../pages/Cards';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
@@ -61,7 +62,7 @@ function resolve(route: Route): ReactNode {
     case 'glossar':
       return <Glossary key={route.query.sub ?? 'alle'} sub={route.query.sub} />;
     case 'karten':
-      return <ComingSoon title="Karteikarten" />;
+      return b === 'lernen' && route.parts[2] ? <CardSession key={route.parts[2]} scope={route.parts[2]} /> : <CardsHome />;
     case 'quiz':
       return <ComingSoon title="Quiz" />;
     case 'klausur':
