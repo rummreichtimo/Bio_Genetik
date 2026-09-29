@@ -14,28 +14,12 @@ import { Quiz } from '../pages/Quiz';
 import { Mistakes } from '../pages/Mistakes';
 import { Exam } from '../pages/Exam';
 import { Quick } from '../pages/Quick';
+import { Stats } from '../pages/Stats';
 import { KlausurList, KlausurTask } from '../pages/Klausur';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
 import { Link, useRoute, type Route } from './router';
 import { Shell } from './Shell';
-
-function ComingSoon({ title }: { title: string }) {
-  return (
-    <div className="page page-narrow">
-      <header className="page-head">
-        <span className="eyebrow">In Arbeit</span>
-        <h1>{title}</h1>
-        <p className="lead">Dieser Bereich wird in einer der nächsten Entwicklungsphasen gebaut.</p>
-      </header>
-      <div>
-        <Link to="/" className="btn btn-primary">
-          Zur Startseite
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 function NotFound() {
   return (
@@ -79,7 +63,7 @@ function resolve(route: Route): ReactNode {
     case 'fehler':
       return <Mistakes />;
     case 'statistik':
-      return <ComingSoon title="Statistik" />;
+      return <Stats />;
     case 'experimente':
       return <ExperimentList />;
     case 'experiment':

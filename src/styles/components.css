@@ -297,6 +297,8 @@ button.chip[aria-pressed='true'] {
   font-size: var(--fs-sm);
   color: var(--ink-2);
   font-weight: 600;
+  hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
 .stat-note {
