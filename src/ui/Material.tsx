@@ -14,7 +14,7 @@ export function MaterialView({ blocks }: { blocks: MaterialBlock[] }) {
             return (
               <figure key={i} className="material-seq">
                 {b.label && <figcaption className="field-label">{b.label}</figcaption>}
-                <div className="scroll-x">
+                <div className="scroll-x" tabIndex={0}>
                   <Seq value={b.value} className="seq-lg" />
                 </div>
                 {b.caption && <figcaption className="faint">{b.caption}</figcaption>}
@@ -23,7 +23,7 @@ export function MaterialView({ blocks }: { blocks: MaterialBlock[] }) {
           case 'table':
             return (
               <figure key={i} className="material-table">
-                <div className="scroll-x">
+                <div className="scroll-x" tabIndex={0}>
                   <table className="data-table">
                     <thead>
                       <tr>{b.head.map((h) => <th key={h} scope="col">{h}</th>)}</tr>

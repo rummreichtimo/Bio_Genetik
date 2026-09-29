@@ -34,13 +34,18 @@ Jeder Inhalt ist gekennzeichnet:
 Automatische Tests prüfen alle Inhalte: gültige Seitenzahlen (1–29), eindeutige IDs, korrekte Lösungen, Quellen für externe
 Angaben – und dass jede Musterantwort ihr eigenes Bewertungsraster erfüllt.
 
+## Online-Version
+
+Die fertige App ist als claude.ai-Artifact veröffentlicht: https://claude.ai/artifact/3J9U7LDuYWUymc67jkqgc4
+(privat – nur für Personen sichtbar, mit denen das Artifact geteilt wird). Sie entsteht aus `npm run build:single`.
+
 ## Schnellstart
 
 ```bash
 npm install
 npm run dev        # Entwicklungsserver auf http://localhost:5173
 npm test           # Unit-Tests (Vitest)
-npm run test:e2e   # Klicktests (Playwright) auf Desktop-, Tablet- und Handybreite
+npm run test:e2e   # Klicktests (Playwright) auf Desktop-, Tablet- und Handybreite inkl. axe-Barrierecheck aller Seiten (hell/dunkel)
 npm run build      # Produktions-Build nach dist/
 ```
 
@@ -90,6 +95,7 @@ zugeschaltet werden (Einstellungen → „KI-Bewertung verwenden“). Die KI bew
 
 ## Barrierearmut
 
+Automatisch geprüft mit axe-core (WCAG 2.1 AA) auf allen Seiten, in hellem und dunklem Schema, auf drei Bildschirmbreiten.
 Tastaturbedienung überall (Karten: Leertaste = umdrehen, 1/2/3 = bewerten), sichtbare Fokusrahmen, Sprunglink zum Inhalt,
 Beschriftungen für Screenreader, Diagramme mit Tabellenansicht, Farben nie allein als Informationsträger, reduzierte Bewegung
 wird respektiert, Layout für Handy, Tablet (iPad) und Desktop ohne horizontales Scrollen.

@@ -125,7 +125,7 @@ export function SourcesPage() {
       <section className="section" aria-labelledby="pages-title">
         <h2 id="pages-title">Seiten deiner PDF</h2>
         <p className="muted">Deine PDF hat 29 Seiten: zwei Lehrplanseiten und 27 Doppelseiten aus dem Lehrbuch. So verteilen sie sich auf die Themen.</p>
-        <div className="scroll-x">
+        <div className="scroll-x" tabIndex={0}>
           <table className="data-table">
             <thead>
               <tr>

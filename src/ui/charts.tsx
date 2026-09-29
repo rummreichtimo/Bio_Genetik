@@ -77,7 +77,7 @@ export function Chart({ title, data, max, ticks, kind, unitLabel, empty }: Chart
       {!hasData && empty ? (
         <div className="chart-empty">{empty}</div>
       ) : table ? (
-        <div className="scroll-x">
+        <div className="scroll-x" tabIndex={0}>
           <table className="data-table">
             <thead><tr><th scope="col">Zeitraum</th><th scope="col">{unitLabel}</th></tr></thead>
             <tbody>

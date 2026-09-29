@@ -21,7 +21,7 @@ export function CodonTable() {
         <label className="field-label" htmlFor={id}>Codon nachschlagen (mRNA, 5'→3')</label>
         <input id={id} className="input mono" value={q} maxLength={5} placeholder="z. B. AUG" onChange={(e) => setQ(e.target.value)} autoComplete="off" spellCheck={false} />
       </div>
-      <div className="scroll-x">
+      <div className="scroll-x" tabIndex={0}>
         <table className="codon-table">
           <caption className="sr-only">Genetischer Code: Zeile = erste Base, Spalte = zweite Base, innerhalb der Zelle die dritte Base</caption>
           <thead>
@@ -84,7 +84,7 @@ export function Translator() {
       <div className="translate-out">
         <div>
           <span className="field-label">mRNA (5'→3')</span>
-          <div className="scroll-x"><Seq value={codons(mrna).join(' ') || '–'} className="seq-lg" /></div>
+          <div className="scroll-x" tabIndex={0}><Seq value={codons(mrna).join(' ') || '–'} className="seq-lg" /></div>
         </div>
         <div>
           <span className="field-label">Aminosäuren</span>

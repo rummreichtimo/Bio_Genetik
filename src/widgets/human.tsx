@@ -33,7 +33,7 @@ function Pedigree({ people, families, selected, onSelect, width, height, label }
   const P = new Map(people.map((p) => [p.id, p]));
   const S = 13;
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="wsvg pedigree" role="img" aria-label={label}>
+    <svg viewBox={`0 0 ${width} ${height}`} className="wsvg pedigree" role={onSelect ? 'group' : 'img'} aria-label={label}>
       {families.map((f, i) => {
         const a = P.get(f.parents[0])!;
         const b = P.get(f.parents[1])!;

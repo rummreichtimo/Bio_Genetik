@@ -54,7 +54,7 @@ export function Stats() {
           <Stat value={s} label={s === 1 ? 'Tag Lernserie' : 'Tage Lernserie'} note={`${t.activeDays} Lerntage`} />
           <Stat value={t.attempts} label="Antworten" note={`✅ ${t.correct} · 🟡 ${t.partial} · ❌ ${t.wrong}`} />
           <Stat value={pct(t.accuracy)} label="Trefferquote" note="teilweise richtig zählt halb" />
-          <Stat value={t.cardReviews} label="Kartenwiederholungen" note={`${cards.due} fällig · ${cards.fresh} neu`} />
+          <Stat value={t.cardReviews} label={'Karten\u00ADwiederholungen'} note={`${cards.due} fällig · ${cards.fresh} neu`} />
           <Stat value={repeated} label="Fragen wiederholt" note="mehr als einmal beantwortet" />
           <Stat value={exam.count} label="Prüfungen" note={exam.best !== null ? `Bestwert ${pct(exam.best)}` : 'noch keine'} />
           <Stat value={Object.values(state.lessons).reduce((a, l) => a + l.done.length, 0)} label="Lernabschnitte" note="abgeschlossen" />

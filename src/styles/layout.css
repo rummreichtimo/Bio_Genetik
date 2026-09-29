@@ -380,7 +380,9 @@
 .scroll-x {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-s, 6px);
 }
+.scroll-x:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Grid-/Flex-Kinder dürfen schmaler als ihr Inhalt werden (breite Abbildungen scrollen dann in ihrem eigenen Container) */
 .stack,

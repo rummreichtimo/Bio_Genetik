@@ -97,7 +97,7 @@ export function Dashboard() {
               label="Letzte Prüfung"
               note={exam.count ? `${exam.count} Prüfungen · Ø letzte 3: ${pct(exam.avg3)}` : 'Noch keine Prüfung'}
             />
-            <Stat value={pct(overall)} label="Prüfungsfortschritt" note="Beherrschung aller Themen" />
+            <Stat value={pct(overall)} label={'Prüfungs\u00ADfortschritt'} note="Beherrschung aller Themen" />
           </div>
         </div>
         <div className="dash-goal">

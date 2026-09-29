@@ -61,7 +61,7 @@ export function BlockView({ block }: { block: Block }) {
       return (
         <div className="block block-compare">
           {block.title && <h3 className="block-title">{block.title}</h3>}
-          <div className="scroll-x">
+          <div className="scroll-x" tabIndex={0}>
             <table className="data-table compare-table">
               <thead>
                 <tr>

@@ -41,12 +41,28 @@ export function Settings() {
     }
   };
 
-  const downloadExport = () => {
+  const downloadExport = async () => {
     if (!exportText) return;
+    const filename = `genetik-lernstand-${new Date().toISOString().slice(0, 10)}.json`;
+    if (inClaude) {
+      // In claude.ai speichert nur die downloads-Fähigkeit Dateien (nach Bestätigung durch dich)
+      const dl = (await window.claude!.use('downloads').catch(() => null)) as { save(r: { filename: string; data: string }): Promise<unknown> } | null;
+      if (!dl) {
+        toast.show('Speichern als Datei ist hier nicht möglich – nutze „Kopieren“.');
+        return;
+      }
+      try {
+        await dl.save({ filename, data: exportText });
+      } catch (e) {
+        const code = (e as { code?: string })?.code;
+        if (code !== 'declined') toast.show('Speichern hat nicht geklappt – nutze „Kopieren“.');
+      }
+      return;
+    }
     const blob = new Blob([exportText], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `genetik-lernstand-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = filename;
     a.click();
     window.setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   };
@@ -89,7 +105,6 @@ export function Settings() {
               className="tab"
               role="radio"
               aria-checked={s.theme === t.id}
-              aria-selected={s.theme === t.id}
               onClick={() => updateSettings({ theme: t.id })}
             >
               {t.id === 'light' && <IconSun width={16} height={16} style={{ verticalAlign: '-3px', marginRight: 6 }} />}
@@ -209,11 +224,9 @@ export function Settings() {
               <button type="button" className="btn btn-soft btn-small" onClick={copyExport}>
                 <IconCopy /> Kopieren
               </button>
-              {!inClaude && (
-                <button type="button" className="btn btn-ghost btn-small" onClick={downloadExport}>
-                  <IconDownload /> Als Datei speichern
-                </button>
-              )}
+              <button type="button" className="btn btn-ghost btn-small" onClick={downloadExport}>
+                <IconDownload /> Als Datei speichern
+              </button>
             </div>
           </div>
         )}
