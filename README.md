@@ -8,6 +8,8 @@ Interaktive Lernapp für Biologie (Genetik, Oberstufe) – aufgebaut ausschließ
 
 | Bereich | Inhalt |
 |---|---|
+| **Suche** | Findet Themen, Lernabschnitte, Fachbegriffe, Experimente und Bildgeschichten (auch mit Tippfehlern und Alltagswörtern wie „Verdopplung“); Taste „/“ |
+| **Anschaulich erklärt** | Animierte Bildgeschichten Schritt für Schritt – zuerst die DNA-Replikation in 12 Bildern (Doppelhelix, Helicase, Primer, Polymerase, Leit-/Folgestrang, Ligase, Fehlerkorrektur, Meselson-Stahl) |
 | **Lernpfad** | Alle Themen in der Reihenfolge der PDF; „Weiterlernen“ springt zum nächsten offenen Abschnitt |
 | **Lernen zuerst** | Quiz, Karteikarten, Prüfung und 5-Minuten-Modus fragen standardmäßig nur ab, was im Lernmodus schon gelernt wurde (abschaltbar) |
 | **Nachlesen** | Zu jeder Frage und jeder Karte öffnet „Nachlesen“ den Lernabschnitt, in dem die Antwort erklärt wird – direkt an Ort und Stelle |
@@ -72,6 +74,7 @@ src/
   learning/       Logik: Bewertung, Wiederholungssystem, Fortschritt, Fragenauswahl, Fehlermuster, genetischer Code
   progress/       Lernstand: Datenmodell, Übergänge, Speicherung (Local Storage / claude.ai)
   quiz/           Fragekomponente für alle Fragetypen, KI-Zweitbewertung
+  explainers/     Bildgeschichten „Anschaulich erklärt“ (animierte SVG-Szenen)
   widgets/        17 interaktive Abbildungen (Replikationsgabel, PCR, Gele, Stammbäume, …)
   pages/          Seiten (Dashboard, Themen, Lernmodus, Karten, Quiz, Prüfung, Statistik, …)
   ui/             gemeinsame Bausteine (Herkunftskennzeichnung, Markdown, Diagramme, …)

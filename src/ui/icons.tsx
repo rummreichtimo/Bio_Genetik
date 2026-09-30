@@ -25,6 +25,13 @@ export const IconHome = (p: P) => (
   </svg>
 );
 
+export const IconSearch = (p: P) => (
+  <svg {...base(p)}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="m16 16 4.5 4.5" />
+  </svg>
+);
+
 export const IconBook = (p: P) => (
   <svg {...base(p)}>
     <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" />

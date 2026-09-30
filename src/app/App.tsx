@@ -16,6 +16,8 @@ import { Exam } from '../pages/Exam';
 import { Quick } from '../pages/Quick';
 import { Stats } from '../pages/Stats';
 import { LearningPath } from '../pages/Path';
+import { Search } from '../pages/Search';
+import { Explain } from '../pages/Explain';
 import { KlausurList, KlausurTask } from '../pages/Klausur';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
@@ -45,6 +47,10 @@ function resolve(route: Route): ReactNode {
       return <Dashboard />;
     case 'lernpfad':
       return <LearningPath />;
+    case 'suche':
+      return <Search q={route.query.q} />;
+    case 'erklaert':
+      return b ? <Explain key={b} sub={b} start={route.query.bild} /> : <Search />;
     case 'themen':
       return <Topics />;
     case 'thema':

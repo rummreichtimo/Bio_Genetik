@@ -16,9 +16,11 @@ import {
   IconPractice,
   IconProgress,
   IconQuiz,
+  IconSearch,
   IconSettings,
 } from '../ui/icons';
-import { Link, isActive, useRoute } from './router';
+import { Link, isActive, navigate, useRoute } from './router';
+import { useEffect, useRef, useState } from 'react';
 
 interface NavItem {
   to: string;
@@ -40,6 +42,37 @@ function NavLink({ item, path }: { item: NavItem; path: string }) {
         </span>
       ) : null}
     </Link>
+  );
+}
+
+/** Suchfeld in der Seitenleiste; Taste „/“ springt hinein */
+function SideSearch() {
+  const [q, setQ] = useState('');
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement;
+      if (e.key !== '/' || (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable))) return;
+      e.preventDefault();
+      if (ref.current && ref.current.offsetParent) ref.current.focus();
+      else navigate('/suche');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+  return (
+    <form
+      className="side-search"
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        navigate(`/suche${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ''}`);
+        setQ('');
+      }}
+    >
+      <IconSearch aria-hidden="true" />
+      <input ref={ref} type="search" aria-label="Themen durchsuchen" placeholder="Suchen … ( / )" value={q} onChange={(e) => setQ(e.target.value)} />
+    </form>
   );
 }
 
@@ -96,6 +129,7 @@ export function Shell({ children }: { children: ReactNode }) {
       </a>
       <aside className="sidebar" aria-label="Hauptnavigation">
         <Brand />
+        <SideSearch />
         <nav className="nav-group" aria-label="Lernen">
           <span className="nav-group-label">Lernen</span>
           {learn.map((i) => (
@@ -130,6 +164,9 @@ export function Shell({ children }: { children: ReactNode }) {
         <header className="topbar">
           <Brand />
           <div className="topbar-actions">
+            <Link to="/suche" className="icon-btn" aria-label="Suchen">
+              <IconSearch />
+            </Link>
             <Link to="/einstellungen" className="icon-btn" aria-label="Einstellungen">
               <IconSettings />
             </Link>

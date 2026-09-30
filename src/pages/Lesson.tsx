@@ -5,7 +5,8 @@ import { useProgress } from '../progress/store';
 import { Link, navigate } from '../app/router';
 import { QuestionView } from '../quiz/QuestionView';
 import { BlockView } from '../ui/Blocks';
-import { IconArrowLeft, IconArrowRight, IconCheck } from '../ui/icons';
+import { IconArrowLeft, IconArrowRight, IconCheck, IconSparkle } from '../ui/icons';
+import { getExplainer } from '../explainers';
 import { Bar } from '../ui/primitives';
 import { pagesLong, SelfRatingControl } from '../ui/topic';
 
@@ -74,6 +75,11 @@ export function Lesson({ sub: subId, start }: { sub: string; start?: string }) {
         <h1>{sub.title}</h1>
         {lesson.intro && idx === 0 && <p className="lead">{lesson.intro}</p>}
         <span className="src-tag topic-src"><span aria-hidden="true">📘</span> {pagesLong(sub.pages)}</span>
+        {getExplainer(sub.id) && idx === 0 && (
+          <Link to={`/erklaert/${sub.id}`} className="btn btn-soft" style={{ justifySelf: 'start' }}>
+            <IconSparkle /> Erst den Überblick: anschaulich erklärt in {getExplainer(sub.id)!.scenes.length} Bildern
+          </Link>
+        )}
       </header>
 
       <div className="lesson-layout">

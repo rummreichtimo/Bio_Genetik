@@ -16,8 +16,9 @@ import type { Level } from '../content/types';
 import { subProgress } from '../learning/mastery';
 import { pct } from '../learning/stats';
 import { useProgress } from '../progress/store';
+import { getExplainer } from '../explainers';
 import { Link } from '../app/router';
-import { IconArrowRight, IconBook, IconCards, IconFlask, IconPen, IconQuiz } from '../ui/icons';
+import { IconArrowRight, IconBook, IconCards, IconFlask, IconPen, IconQuiz, IconSparkle } from '../ui/icons';
 import { LEVEL_META, ProgressRing, StatusChip } from '../ui/primitives';
 import { ExternalRef, ProvNote, SourceTag } from '../ui/Provenance';
 import { Markdown } from '../ui/Markdown';
@@ -133,6 +134,14 @@ export function Topic({ id }: { id: string }) {
           Lernen und üben
         </h2>
         <div className="action-grid">
+          {getExplainer(sub.id) && (
+            <Link to={`/erklaert/${sub.id}`} className="card card-link action-card action-primary">
+              <IconSparkle aria-hidden="true" />
+              <span className="card-title">Anschaulich erklärt</span>
+              <span className="muted">{getExplainer(sub.id)!.scenes.length} animierte Bilder, Schritt für Schritt</span>
+              <span className="plan-cta">Ansehen <IconArrowRight width={18} height={18} /></span>
+            </Link>
+          )}
           <Link to={`/lernen/${sub.id}`} className="card card-link action-card action-primary">
             <IconBook aria-hidden="true" />
             <span className="card-title">Lernmodus</span>

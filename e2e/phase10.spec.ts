@@ -4,6 +4,8 @@ import { expect, test } from '@playwright/test';
 const ROUTES = [
   '/',
   '/lernpfad',
+  '/suche?q=replikation',
+  '/erklaert/replikation',
   '/themen',
   '/thema/replikation',
   '/lernen/replikation',
