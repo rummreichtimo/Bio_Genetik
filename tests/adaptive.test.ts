@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { QUESTIONS } from '../src/content';
+import { QUESTIONS, getLesson } from '../src/content';
 import { errorPatterns } from '../src/learning/errors';
 import { buildPlan } from '../src/learning/plan';
 import { allSubProgress } from '../src/learning/mastery';
-import { recordAnswer, setSelfRating } from '../src/progress/logic';
+import { markSection, recordAnswer, setSelfRating } from '../src/progress/logic';
 import { emptyState } from '../src/progress/types';
 import { buildQuick } from '../src/pages/Quick';
 
@@ -27,11 +27,18 @@ describe('Fehlermuster und adaptiver Plan', () => {
     expect(plan.some((i) => i.to === '/quiz?sub=code&fehler=code')).toBe(true);
   });
 
-  it('5-Minuten-Einheit wählt ein als „noch nicht“ markiertes Thema', () => {
-    const s = setSelfRating(emptyState(NOW), 'epigenetik', 'nicht', NOW);
-    const q = buildQuick(s, NOW);
+  it('5-Minuten-Einheit wählt ein gelerntes, als „noch nicht“ markiertes Thema', () => {
+    let s = emptyState(NOW);
+    const sections = getLesson('epigenetik')!.sections;
+    for (const sec of sections) s = markSection(s, 'epigenetik', sec.id, sections.length, NOW);
+    s = setSelfRating(s, 'epigenetik', 'nicht', NOW);
+    const q = buildQuick(s, NOW)!;
     expect(q.sub).toBe('epigenetik');
     expect(q.terms.length).toBe(3);
     expect(q.questions.length).toBeGreaterThan(0);
+  });
+
+  it('5-Minuten-Einheit ohne Gelerntes verweist aufs Lernen', () => {
+    expect(buildQuick(emptyState(NOW), NOW)).toBeNull();
   });
 });

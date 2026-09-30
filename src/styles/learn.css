@@ -965,3 +965,36 @@
   pointer-events: none;
 }
 .chart-tip strong { font-size: var(--fs-md); }
+
+/* ---------- Experiment als Lernbaustein ---------- */
+.block-experiment {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l, 14px);
+  background: var(--surface);
+}
+.exp-block-head { display: flex; gap: 10px; align-items: flex-start; }
+.exp-block-head svg { flex: none; margin-top: 2px; color: var(--accent); }
+
+/* ---------- Nachlesen ---------- */
+.readup { display: grid; gap: 10px; }
+.readup-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.readup-hint { font-size: var(--fs-sm); color: var(--ink-2); }
+.readup-panel {
+  padding: 16px;
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  background: var(--bg);
+  min-width: 0;
+}
+.readup-head { display: grid; gap: 2px; }
+.readup-title { font-size: var(--fs-lg); }
+.notice {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-m);
+  background: var(--accent-soft, var(--bg));
+  color: var(--ink);
+  font-size: var(--fs-sm);
+}

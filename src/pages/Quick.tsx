@@ -4,6 +4,8 @@ import type { Question } from '../content/types';
 import { allSubProgress } from '../learning/mastery';
 import { filterQuestions, pickQuestions } from '../learning/select';
 import { isDue } from '../learning/srs';
+import { isCardLearned, nextLearnStep } from '../learning/learned';
+import { stepLink } from './Path';
 import type { CardRating, ProgressState, Result } from '../progress/types';
 import { useProgress } from '../progress/store';
 import { Link } from '../app/router';
@@ -22,30 +24,63 @@ interface QuickPlan {
 }
 
 /** Wählt das Thema mit dem größten Nutzen für eine kurze Einheit. */
-export function buildQuick(state: ProgressState, now = Date.now()): QuickPlan {
-  const progress = allSubProgress(state);
+export function buildQuick(state: ProgressState, now = Date.now()): QuickPlan | null {
+  // Nur Themen, von denen schon etwas im Lernmodus gelernt wurde
+  const learned = new Set(SUBTOPICS.filter((x) => (state.lessons[x.id]?.done.length ?? 0) > 0).map((x) => x.id));
+  if (!learned.size) return null;
+  const progress = allSubProgress(state).filter((p) => learned.has(p.sub));
   const weak = progress.filter((p) => p.status === 'schwach').sort((a, b) => (a.recentMastery ?? 0) - (b.recentMastery ?? 0))[0];
-  const recent = state.recent.find((r) => getSubtopic(r.sub));
+  const recent = state.recent.find((r) => learned.has(r.sub));
   const inWork = progress.find((p) => p.status === 'in-arbeit');
-  const open = progress.find((p) => p.status === 'offen');
-  const sub = weak?.sub ?? recent?.sub ?? inWork?.sub ?? open?.sub ?? SUBTOPICS[0].id;
-  const reason = weak ? 'Dein schwächstes Thema' : recent ? 'Zuletzt gelernt' : inWork ? 'Angefangenes Thema' : 'Nächstes neues Thema';
+  const sub = weak?.sub ?? recent?.sub ?? inWork?.sub ?? progress[0].sub;
+  const reason = weak ? 'Dein schwächstes Thema' : recent ? 'Zuletzt gelernt' : 'Angefangenes Thema';
   // Begriffe: bevorzugt noch nicht sicher gewusste Begriffskarten
   const terms = termsOf(sub)
     .map((t) => t.id)
     .sort((a, b) => (state.cards[`t:${a}`]?.box ?? -1) - (state.cards[`t:${b}`]?.box ?? -1))
     .slice(0, 3);
   const subCards = CARDS.filter((c) => c.sub === sub && !c.id.startsWith('t:'));
-  const cards = [...subCards.filter((c) => isDue(state.cards[c.id], now)), ...subCards.filter((c) => !state.cards[c.id])].slice(0, 4).map((c) => c.id);
-  const questions = pickQuestions(filterQuestions(state, { subs: [sub], levels: [1, 2, 3], types: ['single', 'tf', 'multi', 'cloze', 'match'] }), state, 3, now);
+  const cards = [...subCards.filter((c) => isDue(state.cards[c.id], now)), ...subCards.filter((c) => !state.cards[c.id] && isCardLearned(state, c.id))]
+    .slice(0, 4)
+    .map((c) => c.id);
+  const questions = pickQuestions(
+    filterQuestions(state, { subs: [sub], levels: [1, 2, 3], types: ['single', 'tf', 'multi', 'cloze', 'match'], learnedOnly: true }),
+    state,
+    3,
+    now,
+  );
   return { sub, reason, terms, cards, questions };
 }
 
 type Step = 'begriffe' | 'karten' | 'quiz' | 'fertig';
 
 export function Quick() {
-  const { state, rateCard } = useProgress();
+  const { state } = useProgress();
   const [plan] = useState(() => buildQuick(state));
+  if (!plan) {
+    const step = nextLearnStep(state);
+    return (
+      <div className="page page-narrow">
+        <header className="page-head">
+          <span className="eyebrow">5-Minuten-Einheit</span>
+          <h1>5 Minuten reichen für einen Abschnitt</h1>
+          <p className="lead">
+            Wiederholen kannst du erst, wenn du schon etwas gelernt hast. Nutze die 5 Minuten für den nächsten kurzen Abschnitt im Lernpfad.
+          </p>
+        </header>
+        {step && (
+          <Link to={stepLink(step)} className="btn btn-primary btn-large" style={{ alignSelf: 'flex-start' }}>
+            {getSubtopic(step.sub)?.title}: {step.sectionTitle} <IconArrowRight />
+          </Link>
+        )}
+      </div>
+    );
+  }
+  return <QuickRun plan={plan} />;
+}
+
+function QuickRun({ plan }: { plan: QuickPlan }) {
+  const { rateCard } = useProgress();
   const [step, setStep] = useState<Step>('begriffe');
   const [shown, setShown] = useState<Record<string, boolean>>({});
   const [cardIdx, setCardIdx] = useState(0);

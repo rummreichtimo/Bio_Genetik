@@ -1,23 +1,14 @@
 import { useState } from 'react';
 import { CHAPTERS, EXPERIMENTS, getExperiment, getQuestion, getSubtopic } from '../content';
-import type { ExperimentStepKey } from '../content/types';
 import { Link } from '../app/router';
 import { QuestionView } from '../quiz/QuestionView';
 import { IconArrowRight, IconFlask } from '../ui/icons';
 import { PROV_META, SourceTag } from '../ui/Provenance';
 import { Markdown } from '../ui/Markdown';
 import { WidgetView } from '../widgets';
+import { STEP_LABEL } from '../ui/ExperimentBlock';
 
-export const STEP_LABEL: Record<ExperimentStepKey, string> = {
-  frage: 'Fragestellung',
-  hypothese: 'Hypothese',
-  material: 'Material',
-  durchfuehrung: 'Durchführung',
-  beobachtung: 'Beobachtung',
-  ergebnis: 'Ergebnis',
-  schluss: 'Schlussfolgerung',
-  methode: 'Methode',
-};
+export { STEP_LABEL };
 
 export function ExperimentList() {
   return (

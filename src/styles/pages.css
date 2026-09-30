@@ -650,3 +650,70 @@ a.level-tile:hover {
   font-weight: 400;
   white-space: nowrap;
 }
+
+/* ---------- Weiterlernen & Lernpfad ---------- */
+.continue-card {
+  display: grid;
+  gap: 14px;
+  border-color: var(--accent-soft-2);
+  background: linear-gradient(180deg, var(--accent-soft) 0%, var(--surface) 70%);
+}
+.continue-title { font-size: var(--fs-2xl); margin: 0; text-wrap: balance; }
+.continue-step { margin: 0; color: var(--ink-2); }
+.how-list {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 6px;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  max-width: 68ch;
+}
+.path-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.path-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 14px;
+  padding-bottom: 18px;
+  position: relative;
+}
+.path-item::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+.path-item:last-child::before { display: none; }
+.path-n {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  color: var(--ink-2);
+  position: relative;
+  z-index: 1;
+}
+.path-done .path-n { background: var(--good); border-color: var(--good); color: var(--on-accent); }
+.path-active .path-n { border-color: var(--accent); color: var(--accent); }
+.path-item.is-next .path-n { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.path-body {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+.path-item.is-next .path-body { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.path-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
+.path-title { font-weight: 700; font-size: var(--fs-md); color: var(--ink); text-decoration: none; }
+.path-title:hover { text-decoration: underline; }
+.path-progress { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; }

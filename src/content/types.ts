@@ -101,6 +101,8 @@ export type Block =
       ext?: ExternalSource;
     }
   | { kind: 'widget'; widget: WidgetId; caption?: string; src?: Src[] }
+  /** Experiment aus der PDF, Schritt für Schritt im Lernmodus */
+  | { kind: 'experiment'; id: string; /** Abbildung nicht erneut zeigen (steht schon im Abschnitt) */ noWidget?: boolean }
   | { kind: 'check'; questionIds: string[] };
 
 export interface LessonSection {
@@ -146,6 +148,8 @@ export interface Flashcard {
   ext?: ExternalSource;
   /** optional: Widget/Abbildung auf der Vorderseite (Abbildung → Erklärung) */
   figure?: FigureRef;
+  /** Lernabschnitt, in dem der Inhalt erklärt wird (sonst automatisch ermittelt) */
+  learn?: string;
 }
 
 export interface FigureRef {
@@ -190,6 +194,8 @@ export interface QBase {
   material?: MaterialBlock[];
   /** optionales Widget zur Frage */
   figure?: FigureRef;
+  /** Lernabschnitt, in dem die Antwort erklärt wird (sonst automatisch ermittelt) */
+  learn?: string;
 }
 
 export type MaterialBlock =

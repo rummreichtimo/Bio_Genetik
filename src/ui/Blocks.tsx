@@ -2,6 +2,7 @@ import type { Block } from '../content/types';
 import { WidgetView } from '../widgets';
 import { Inline, Markdown } from './Markdown';
 import { ProvNote, SourceTag } from './Provenance';
+import { ExperimentBlock } from './ExperimentBlock';
 
 /** Darstellung eines Lernbausteins (außer Verständnis-Checks, die die Lektion selbst rendert). */
 export function BlockView({ block }: { block: Block }) {
@@ -90,6 +91,8 @@ export function BlockView({ block }: { block: Block }) {
       );
     case 'widget':
       return <WidgetView id={block.widget} caption={block.caption} />;
+    case 'experiment':
+      return <ExperimentBlock id={block.id} noWidget={block.noWidget} />;
     case 'check':
       return null;
   }

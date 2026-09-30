@@ -10,6 +10,8 @@ import { Inline, Markdown } from '../ui/Markdown';
 import { MaterialView } from '../ui/Material';
 import { WidgetView } from '../widgets';
 import { AiPanel } from './AiPanel';
+import { ReadUp } from './ReadUp';
+import { sectionOfQuestion } from '../content';
 import type { AiGrade } from '../ai/gradePrompt';
 
 function shuffled<T>(arr: T[], avoidIdentity = true): T[] {
@@ -76,6 +78,8 @@ export function QuestionView({ q, mode, onResult, exam, headingLevel = 3, hideMa
   };
 
   const done = g !== null;
+  // Im Lernmodus steht die Erklärung direkt darüber, in der Prüfung gibt es keine Hilfen
+  const readRef = mode !== 'lesson' && !exam ? sectionOfQuestion(q.id) : undefined;
   const shownResult: Result | null = g ? (override ? 'correct' : ai ? ai.result : g.result) : null;
   const H = headingLevel === 2 ? 'h2' : 'h3';
 
@@ -110,6 +114,19 @@ export function QuestionView({ q, mode, onResult, exam, headingLevel = 3, hideMa
 
       {done && !exam && g && (
         <Feedback q={q} g={g} resp={resp} result={shownResult!} overridden={override} onSelfCorrect={q.type === 'free' && g.result !== 'correct' && !override ? selfCorrect : undefined} />
+      )}
+      {readRef && (
+        <ReadUp
+          key={done ? 'after' : 'before'}
+          refTo={readRef}
+          hint={
+            done
+              ? shownResult === 'correct'
+                ? undefined
+                : 'Hier wird das erklärt:'
+              : 'Unsicher? Lies zuerst nach – das ist kein Schummeln, sondern Lernen.'
+          }
+        />
       )}
       {done && !exam && g && q.type === 'free' && resp?.type === 'free' && !g.free?.tooShort && (
         <AiPanel

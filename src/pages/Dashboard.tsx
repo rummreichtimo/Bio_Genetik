@@ -9,6 +9,7 @@ import { ChapterGlyph, IconArrowRight, IconFlame } from '../ui/icons';
 import { Bar, ProgressRing, Stat, toneFor } from '../ui/primitives';
 import { SubtopicRow } from '../ui/topic';
 import { ThemenGel } from './ThemenGel';
+import { ContinueCard } from './Path';
 
 function ChapterBlock({ chapterId, progress }: { chapterId: string; progress: SubProgress[] }) {
   const ch = CHAPTERS.find((c) => c.id === chapterId)!;
@@ -65,6 +66,8 @@ export function Dashboard() {
         <p className="lead">Alle Inhalte stammen aus deiner PDF „Bio_Genetik“ – mit Seitenangabe. Ergänzungen sind gekennzeichnet.</p>
       </header>
 
+      <ContinueCard />
+
       <section className="card dash-hero" aria-label="Überblick">
         <div className="dash-hero-main">
           <ProgressRing value={overall} size={148} stroke={13} sub="Gesamt" />
@@ -111,6 +114,7 @@ export function Dashboard() {
         </div>
       </section>
 
+      {plan.length > 0 && (
       <section className="section" aria-labelledby="plan-title">
         <div className="section-head">
           <h2 id="plan-title">Heute für dich</h2>
@@ -133,6 +137,7 @@ export function Dashboard() {
           ))}
         </div>
       </section>
+      )}
 
       <section className="section" aria-labelledby="themen-title">
         <div className="section-head">

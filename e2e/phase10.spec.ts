@@ -3,10 +3,12 @@ import { expect, test } from '@playwright/test';
 
 const ROUTES = [
   '/',
+  '/lernpfad',
   '/themen',
   '/thema/replikation',
   '/lernen/replikation',
   '/lernen/erbgaenge',
+  '/lernen/translation?abschnitt=exp-antibiotikum',
   '/glossar',
   '/karten',
   '/karten/lernen/alle',

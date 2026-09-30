@@ -1,4 +1,4 @@
-import { SUBTOPICS, getLesson, getSubtopic } from '../content';
+import { SUBTOPICS, getSubtopic } from '../content';
 import { DAY_MS } from '../lib/date';
 import type { ProgressState } from '../progress/types';
 import type { SubProgress } from './mastery';
@@ -22,30 +22,21 @@ export function buildPlan(state: ProgressState, progress: SubProgress[], now = D
   const items: PlanItem[] = [];
   const byId = new Map(progress.map((p) => [p.sub, p]));
 
-  // 1) Weiterlernen
-  const recent = state.recent.find((r) => getSubtopic(r.sub));
-  const nextOpen = SUBTOPICS.find((s) => (byId.get(s.id)?.lesson ?? 0) < 1);
-  const target = recent ? recent.sub : nextOpen?.id ?? SUBTOPICS[0].id;
-  const tp = byId.get(target);
-  const sub = getSubtopic(target)!;
-  const hasLesson = !!getLesson(target);
-  if (tp && tp.lesson < 1 && hasLesson) {
+  // 1) Gelerntes festigen (Weiterlernen steht groß darüber)
+  const learnedSubs = SUBTOPICS.filter((x) => (state.lessons[x.id]?.done.length ?? 0) > 0).map((x) => x.id);
+  const recent = state.recent.map((r) => r.sub).find((x) => learnedSubs.includes(x)) ?? learnedSubs[learnedSubs.length - 1];
+  if (recent) {
+    const tp = byId.get(recent);
     items.push({
       id: 'continue',
-      kicker: recent ? 'Weiterlernen' : 'Hier anfangen',
-      title: sub.title,
-      text: tp.lesson > 0 ? `${Math.round(tp.lesson * 100)} % der Lernabschnitte erledigt.` : sub.summary,
-      cta: 'Lernmodus öffnen',
-      to: `/lernen/${target}`,
-    });
-  } else {
-    items.push({
-      id: 'continue',
-      kicker: 'Weiterlernen',
-      title: sub.title,
-      text: tp && tp.attempts ? `Beherrschung ${Math.round((tp.recentMastery ?? 0) * 100)} %. Festige das Thema mit Fragen.` : sub.summary,
+      kicker: 'Gelerntes festigen',
+      title: getSubtopic(recent)!.title,
+      text:
+        tp && tp.attempts
+          ? `Beherrschung ${Math.round((tp.recentMastery ?? 0) * 100)} %. Fragen nur zu dem, was du schon gelernt hast.`
+          : 'Ein paar Fragen zu dem, was du gerade gelernt hast – mit Nachlesen, falls etwas fehlt.',
       cta: 'Thema üben',
-      to: `/quiz?sub=${target}`,
+      to: `/quiz?sub=${recent}`,
     });
   }
 
@@ -65,7 +56,7 @@ export function buildPlan(state: ProgressState, progress: SubProgress[], now = D
       id: 'cards',
       kicker: 'Karteikarten',
       title: `${cards.fresh} neue Karten`,
-      text: 'Begriffe, Prozesse, Experimente und Vergleiche aus deiner PDF.',
+      text: 'Begriffe, Prozesse und Experimente aus den Abschnitten, die du schon gelernt hast.',
       cta: 'Karten starten',
       to: '/karten',
     });
@@ -109,7 +100,7 @@ export function buildPlan(state: ProgressState, progress: SubProgress[], now = D
         cta: 'Prüfung starten',
         to: '/pruefung',
       });
-    } else {
+    } else if (learnedSubs.length) {
       items.push({
         id: 'quick',
         kicker: 'Wenig Zeit?',

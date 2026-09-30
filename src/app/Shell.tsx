@@ -11,6 +11,7 @@ import {
   IconExam,
   IconFlask,
   IconHome,
+  IconList,
   IconPen,
   IconPractice,
   IconProgress,
@@ -61,7 +62,8 @@ export function Shell({ children }: { children: ReactNode }) {
 
   const learn: NavItem[] = [
     { to: '/', label: 'Start', icon: <IconHome /> },
-    { to: '/themen', label: 'Themen', icon: <IconBook />, also: ['/thema', '/lernen', '/glossar'] },
+    { to: '/lernpfad', label: 'Lernpfad', icon: <IconBook />, also: ['/lernen'] },
+    { to: '/themen', label: 'Themen', icon: <IconList />, also: ['/thema', '/glossar'] },
     { to: '/karten', label: 'Karteikarten', icon: <IconCards />, count: due },
     { to: '/experimente', label: 'Experimente', icon: <IconFlask />, also: ['/experiment'] },
   ];
@@ -78,7 +80,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
   const bottom: NavItem[] = [
     { to: '/', label: 'Start', icon: <IconHome /> },
-    { to: '/themen', label: 'Themen', icon: <IconBook />, also: ['/thema', '/lernen', '/glossar', '/experimente', '/experiment'] },
+    { to: '/lernpfad', label: 'Lernen', icon: <IconBook />, also: ['/themen', '/thema', '/lernen', '/glossar', '/experimente', '/experiment'] },
     { to: '/karten', label: 'Karten', icon: <IconCards />, count: due },
     { to: '/ueben', label: 'Üben', icon: <IconPractice />, also: ['/quiz', '/klausur', '/pruefung', '/schnell'] },
     { to: '/fortschritt', label: 'Fortschritt', icon: <IconProgress />, also: ['/fehler', '/statistik', '/lehrplan'] },

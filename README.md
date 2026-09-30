@@ -8,9 +8,12 @@ Interaktive Lernapp für Biologie (Genetik, Oberstufe) – aufgebaut ausschließ
 
 | Bereich | Inhalt |
 |---|---|
+| **Lernpfad** | Alle Themen in der Reihenfolge der PDF; „Weiterlernen“ springt zum nächsten offenen Abschnitt |
+| **Lernen zuerst** | Quiz, Karteikarten, Prüfung und 5-Minuten-Modus fragen standardmäßig nur ab, was im Lernmodus schon gelernt wurde (abschaltbar) |
+| **Nachlesen** | Zu jeder Frage und jeder Karte öffnet „Nachlesen“ den Lernabschnitt, in dem die Antwort erklärt wird – direkt an Ort und Stelle |
 | **Dashboard** | Gesamtfortschritt, Lernserie, Lernzeit, Trefferquote, fällige Karten, Prüfungsstand, Tagesplan („Heute für dich“), Themen-Gel |
 | **Themen** | 6 Kapitel, 18 Unterthemen mit Fortschritt, Selbsteinschätzung 🟢/🟡/🔴, Fachbegriffe, Lehrplanbezug |
-| **Lernmodus** | 88 kurze Abschnitte mit Prozessschritten, Vergleichstabellen, Fachbegriffen („Einfach erklärt“), 17 interaktiven Abbildungen und Verständnischecks |
+| **Lernmodus** | 92 kurze Abschnitte mit Prozessschritten, Vergleichstabellen, Fachbegriffen („Einfach erklärt“), 17 interaktiven Abbildungen, allen 19 Experimenten und Verständnischecks |
 | **Karteikarten** | 308 Karten in 7 Typen, Leitner-System (Gewusst / Unsicher / Nicht gewusst), schwierige Karten kommen öfter |
 | **Quiz** | 328 Fragen, 9 Fragetypen, 5 Schwierigkeitsstufen, adaptive Auswahl, „Warum?“-Erklärungen |
 | **Freitext** | Offline-Bewertung mit Raster (✅/🟡/❌), was richtig war, was fehlt, Fehlvorstellungen, Musterantwort; optional KI-Zweitbewertung |
@@ -30,6 +33,9 @@ Jeder Inhalt ist gekennzeichnet:
 - 💡 **Erklärung/Schlussfolgerung** – z. B. Lösungen der Materialaufgaben
 - 🌐 **Externe Zusatzinformation** – nur wo nötig, immer mit Quelle
 - ⚠️ **Hinweis zur Quelle** – Widersprüche oder vermutliche Druckfehler in der PDF werden angezeigt, nicht stillschweigend aufgelöst (5 Stellen, siehe Seite „Hinweise zur Quelle“)
+
+Jede Frage und jede Karteikarte ist einem Lernabschnitt zugeordnet (automatisch über Verständnischecks, Experimente und Textähnlichkeit,
+bei Bedarf per `learn`-Feld festgelegt); `src/content/assemble.ts` baut außerdem die Experimente in die Lerneinheiten ein.
 
 Automatische Tests prüfen alle Inhalte: gültige Seitenzahlen (1–29), eindeutige IDs, korrekte Lösungen, Quellen für externe
 Angaben – und dass jede Musterantwort ihr eigenes Bewertungsraster erfüllt.

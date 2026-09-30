@@ -2,6 +2,7 @@ import { CARDS } from '../content';
 import { dayKey, lastDays, DAY_MS } from '../lib/date';
 import type { ProgressState } from '../progress/types';
 import { isDue } from './srs';
+import { isCardLearned } from './learned';
 
 export function isActiveDay(d: { s: number; q: number; k: number } | undefined): boolean {
   return !!d && (d.q > 0 || d.k > 0 || d.s >= 60);
@@ -71,22 +72,28 @@ export function totals(state: ProgressState, now = Date.now()): Totals {
 
 export interface CardQueueInfo {
   due: number;
+  /** neue Karten zu schon gelernten Abschnitten */
   fresh: number;
   learned: number;
+  /** neue Karten zu Abschnitten, die noch nicht gelernt sind */
+  locked: number;
 }
 
 export function cardQueueInfo(state: ProgressState, now = Date.now(), filter?: (sub: string) => boolean): CardQueueInfo {
   let due = 0;
   let fresh = 0;
   let learned = 0;
+  let locked = 0;
   for (const c of CARDS) {
     if (filter && !filter(c.sub)) continue;
     const st = state.cards[c.id];
-    if (!st) fresh += 1;
-    else if (isDue(st, now)) due += 1;
+    if (!st) {
+      if (isCardLearned(state, c.id)) fresh += 1;
+      else locked += 1;
+    } else if (isDue(st, now)) due += 1;
     else learned += 1;
   }
-  return { due, fresh, learned };
+  return { due, fresh, learned, locked };
 }
 
 export function examSummary(state: ProgressState): { count: number; last: number | null; avg3: number | null; best: number | null } {

@@ -2,6 +2,7 @@ import type { ExamTask, Experiment, Flashcard, Lesson, Question, SourceIssue, Cu
 import { SUBTOPICS } from './structure';
 import { PACKS } from './chapters';
 import { SOURCE_ISSUES, CURRICULUM } from './meta';
+import { linkToSections, withExperiments, type SectionRef } from './assemble';
 
 export * from './structure';
 export * from './sources';
@@ -42,7 +43,9 @@ function termCards(terms: Term[]): Flashcard[] {
   }));
 }
 
-export const LESSONS: Lesson[] = ALL.lessons;
+const TASK_PARTS = new Set(ALL.examTasks.flatMap((t) => t.parts));
+/** Lerneinheiten inkl. der Experimente als eigene Abschnitte */
+export const LESSONS: Lesson[] = withExperiments(ALL.lessons, ALL.experiments, (id) => TASK_PARTS.has(id));
 export const TERMS: Term[] = ALL.terms;
 export const CARDS: Flashcard[] = [...termCards(ALL.terms), ...ALL.cards];
 export const QUESTIONS: Question[] = ALL.questions;
@@ -74,3 +77,11 @@ const TASK_PART_IDS = new Set(EXAM_TASKS.flatMap((t) => t.parts));
 export const isTaskPart = (qid: string) => TASK_PART_IDS.has(qid);
 
 export const SUB_IDS = SUBTOPICS.map((s) => s.id);
+
+const LINKS = linkToSections(LESSONS, EXPERIMENTS, QUESTIONS, CARDS);
+export type { SectionRef };
+/** Lernabschnitt, in dem die Antwort auf eine Frage erklärt wird */
+export const sectionOfQuestion = (qid: string): SectionRef | undefined => LINKS.questions.get(qid);
+/** Lernabschnitt, in dem der Inhalt einer Karteikarte erklärt wird */
+export const sectionOfCard = (cid: string): SectionRef | undefined => LINKS.cards.get(cid);
+export const getSection = (sub: string, id: string) => getLesson(sub)?.sections.find((s) => s.id === id);

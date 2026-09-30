@@ -819,6 +819,11 @@ export const genproduktB: ContentPack = {
     {
       id: 'mu-q11', sub: 'mutationen', type: 'free', level: 4, err: 'mechanism', prov: 'inf', src: [p(16, 'Material B')], operator: 'Erklären',
       prompt: 'Erkläre die Folgen der Insertion im Insulin-Gen (Material B) für das Hormon Insulin.',
+      material: [
+        { kind: 'text', md: 'Insulin besteht aus einer A- und einer B-Kette, die über **Disulfidbrücken** (zwischen Cysteinen) verknüpft sind. Gezeigt ist der Beginn der A-Kette:' },
+        { kind: 'seq', label: 'normale DNA (A-Kette, Beginn)', value: "3'-CCC TAA CAA CTC GTC ACG ACG ATG AGG TAA ACG…", caption: 'Peptid: Gly-Ile-Val-Glu-Gln-Cys-Cys-Tyr-Ser-Ile-Cys…' },
+        { kind: 'seq', label: 'mutierte DNA', value: "3'-CCC TAA CAA CTT CGT CAC GAC GAT GAG GTA AAC…", caption: 'Material B deiner PDF (S. 16)' },
+      ],
       rubric: [
         { id: 'raster', label: 'Rasterschub: ab der Insertion ändert sich das Leseraster aller folgenden Tripletts', any: [['raster|leseraster|verschieb|verrutsch']], weight: 1.5 },
         { id: 'andere-as', label: 'Ab der 5. Aminosäure werden andere Aminosäuren eingebaut (z. B. Ala statt Gln)', any: [['andere|falsche|veraendert', 'aminosaeure|as\\b|sequenz']], weight: 1 },
@@ -896,6 +901,9 @@ export const genproduktB: ContentPack = {
     {
       id: 'mu-q19', sub: 'mutationen', type: 'free', level: 5, err: 'mechanism', prov: 'inf', src: [p(15, 'Material A')], operator: 'Hypothesen entwickeln',
       prompt: 'Entwickle Hypothesen zu den möglichen Folgen der drei Punktmutationen aus Material A (Position 9: C→T, Position 12: A→C, Position 6: T→G).',
+      material: [
+        { kind: 'seq', label: 'DNA-Abschnitt (codogener Strang), Positionen 1–27', value: "3'-TAC TGT ACC TCA ACG GTA CTA GCG CTC-5'", caption: 'Material A deiner PDF (S. 15) · Übersetzen mit der Codesonne' },
+      ],
       rubric: [
         { id: 'p9', label: 'Position 9: Nonsense (Stopp nach Met-Thr) → stark verkürztes, meist funktionsloses Protein', any: [['9|nonsense|stopp|stop', 'verkuerz|abbruch|funktionslos|kurz']], weight: 1.5 },
         { id: 'p12', label: 'Position 12: Missense (Ser → Arg) → Funktion kann beeinträchtigt sein oder bei ähnlichen Eigenschaften folgenlos bleiben', any: [['12|missense|arg|serin|ser\\b', 'funktion|struktur|eigenschaft|folgenlos|beeintraecht|aktivitaet']], weight: 1.5 },

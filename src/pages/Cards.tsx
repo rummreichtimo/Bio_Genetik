@@ -11,6 +11,9 @@ import { Bar, EmptyState } from '../ui/primitives';
 import { ExternalRef, SourceTag } from '../ui/Provenance';
 import { Markdown } from '../ui/Markdown';
 import { WidgetView } from '../widgets';
+import { isCardLearned } from '../learning/learned';
+import { sectionOfCard } from '../content';
+import { ReadUp } from '../quiz/ReadUp';
 
 export const KIND_META: Record<CardKind, { label: string; icon: string }> = {
   begriff: { label: 'Begriff → Definition', icon: '📖' },
@@ -56,7 +59,8 @@ export function buildDeck(scope: string, state: ProgressState, now = Date.now())
     title = KIND_META[kind]?.label ?? 'Kartentyp';
   }
   const due = pool.filter((c) => isDue(state.cards[c.id], now)).sort((a, b) => state.cards[a.id].box - state.cards[b.id].box || state.cards[a.id].due - state.cards[b.id].due);
-  const fresh = pool.filter((c) => !state.cards[c.id]);
+  // Neue Karten nur zu Abschnitten, die im Lernmodus schon dran waren
+  const fresh = pool.filter((c) => !state.cards[c.id] && isCardLearned(state, c.id));
   const later = pool.filter((c) => state.cards[c.id] && !isDue(state.cards[c.id], now)).sort((a, b) => state.cards[a.id].box - state.cards[b.id].box);
   let list: Flashcard[];
   if (onlyDue) list = due;
@@ -80,8 +84,8 @@ export function CardsHome() {
         <span className="eyebrow">Karteikarten</span>
         <h1>Wiederholen mit System</h1>
         <p className="lead">
-          {CARDS.length} Karten aus deiner PDF. Was du gewusst hast, kommt später wieder; was unsicher war, bald; was du nicht wusstest, noch in
-          derselben Runde.
+          Karten festigen, was du im Lernmodus gelernt hast. Neue Karten kommen erst dazu, wenn du den passenden Abschnitt gelernt hast. Was du
+          gewusst hast, kommt später wieder; was unsicher war, bald; was du nicht wusstest, noch in derselben Runde.
         </p>
       </header>
 
@@ -94,11 +98,18 @@ export function CardsHome() {
         <div className="row">
           {info.due > 0 ? (
             <Link to="/karten/lernen/faellig" className="btn btn-primary btn-large">{info.due} fällige Karten lernen <IconArrowRight /></Link>
-          ) : (
+          ) : info.fresh > 0 ? (
             <Link to="/karten/lernen/neu" className="btn btn-primary btn-large">Neue Karten lernen <IconArrowRight /></Link>
+          ) : (
+            <Link to="/lernpfad" className="btn btn-primary btn-large">Erst lernen: zum Lernpfad <IconArrowRight /></Link>
           )}
           {info.due > 0 && info.fresh > 0 && <Link to="/karten/lernen/neu" className="btn btn-soft">Neue Karten</Link>}
         </div>
+        {info.locked > 0 && (
+          <p className="faint" style={{ fontSize: 'var(--fs-sm)', margin: 0 }}>
+            {info.locked} weitere Karten werden freigeschaltet, sobald du die passenden Abschnitte im Lernmodus gelernt hast.
+          </p>
+        )}
         <div className="boxes" aria-label="Karten je Fach">
           {boxes.map((n, b) => (
             <div key={b} className="box">
@@ -124,7 +135,7 @@ export function CardsHome() {
                 return (
                   <Link key={sid} to={`/karten/lernen/sub-${sid}`} className="card card-link deck">
                     <span className="deck-title">{getSubtopic(sid)?.title}</span>
-                    <span className="faint deck-meta">{cards.length} Karten · {q.due} fällig · {q.fresh} neu</span>
+                    <span className="faint deck-meta">{cards.length} Karten · {q.due} fällig · {q.fresh} neu{q.locked ? ` · ${q.locked} noch nicht gelernt` : ''}</span>
                     <Bar value={mastery} thin label={`Kartenstand ${getSubtopic(sid)?.title}`} />
                   </Link>
                 );
@@ -221,8 +232,19 @@ export function CardSession({ scope }: { scope: string }) {
           <span className="eyebrow">Karteikarten</span>
           <h1>{deck.title}</h1>
         </header>
-        <EmptyState title={scope === 'faellig' ? 'Gerade ist keine Karte fällig' : 'Keine Karten in dieser Auswahl'} action={<Link to="/karten" className="btn btn-primary">Zur Übersicht</Link>}>
-          {scope === 'faellig' ? 'Sehr gut! Lerne neue Karten oder übe mit dem Quiz.' : 'Wähle eine andere Auswahl.'}
+        <EmptyState
+          title={scope === 'faellig' ? 'Gerade ist keine Karte fällig' : 'Noch keine Karten freigeschaltet'}
+          action={
+            scope.startsWith('sub-') ? (
+              <Link to={`/lernen/${scope.slice(4)}`} className="btn btn-primary">Thema jetzt lernen</Link>
+            ) : (
+              <Link to={scope === 'faellig' ? '/karten' : '/lernpfad'} className="btn btn-primary">{scope === 'faellig' ? 'Zur Übersicht' : 'Zum Lernpfad'}</Link>
+            )
+          }
+        >
+          {scope === 'faellig'
+            ? 'Sehr gut! Lerne neue Karten oder übe mit dem Quiz.'
+            : 'Karten kommen zu dir, sobald du die passenden Abschnitte im Lernmodus gelernt hast – dann weißt du auch, worum es geht.'}
         </EmptyState>
       </div>
     );
@@ -264,6 +286,7 @@ export function CardSession({ scope }: { scope: string }) {
                   <SourceTag src={card.src} prov={card.prov} />
                   {card.prov === 'ext' && card.ext && <span style={{ fontSize: 'var(--fs-xs)' }}><ExternalRef ext={card.ext} /></span>}
                 </div>
+                {sectionOfCard(card.id) && <ReadUp key={card.id} refTo={sectionOfCard(card.id)!} hint="Zusammenhang vergessen?" />}
               </div>
             )}
           </div>

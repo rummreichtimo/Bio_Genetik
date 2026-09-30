@@ -15,6 +15,7 @@ import { Mistakes } from '../pages/Mistakes';
 import { Exam } from '../pages/Exam';
 import { Quick } from '../pages/Quick';
 import { Stats } from '../pages/Stats';
+import { LearningPath } from '../pages/Path';
 import { KlausurList, KlausurTask } from '../pages/Klausur';
 import { ExperimentList, ExperimentPage } from '../pages/Experiments';
 import { ToastProvider } from '../ui/primitives';
@@ -42,6 +43,8 @@ function resolve(route: Route): ReactNode {
   switch (a) {
     case undefined:
       return <Dashboard />;
+    case 'lernpfad':
+      return <LearningPath />;
     case 'themen':
       return <Topics />;
     case 'thema':

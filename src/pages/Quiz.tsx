@@ -31,11 +31,13 @@ interface Setup {
   count: number;
   mistakes: boolean;
   err?: ErrorTag;
+  /** nur Fragen zu schon gelernten Abschnitten */
+  learnedOnly: boolean;
 }
 
 function toFilter(s: Setup): QuizFilter {
   const subs = s.scope === 'alle' ? undefined : s.scope.startsWith('kapitel-') ? CHAPTERS.find((c) => c.id === s.scope.slice(8))?.subtopics : [s.scope];
-  return { subs, levels: s.levels, types: s.types, mistakes: s.mistakes, err: s.err };
+  return { subs, levels: s.levels, types: s.types, mistakes: s.mistakes, err: s.err, learnedOnly: s.learnedOnly };
 }
 
 export function Quiz({ query }: { query: Record<string, string> }) {
@@ -47,23 +49,67 @@ export function Quiz({ query }: { query: Record<string, string> }) {
     count: 10,
     mistakes: query.fokus === 'fehler',
     err: (query.fehler as ErrorTag) || undefined,
+    // Fehler-Wiederholungen betreffen ohnehin schon Beantwortetes
+    learnedOnly: query.alle !== '1' && query.fokus !== 'fehler' && !query.fehler,
   };
   const [setup, setSetup] = useState<Setup>(initial);
   const autostart = !!(query.sub || query.fokus || query.fehler || query.stufe);
-  const [run, setRun] = useState<Question[] | null>(() => (autostart ? pickQuestions(filterQuestions(state, toFilter(initial)), state, initial.count) : null));
+  const initialPool = filterQuestions(state, toFilter(initial));
+  // Direkt zu einem Thema gesprungen, aber noch nichts davon gelernt → erst lernen anbieten
+  const [learnFirst, setLearnFirst] = useState(autostart && initial.learnedOnly && !initialPool.length && !!query.sub);
+  const [run, setRun] = useState<Question[] | null>(() => (autostart && initialPool.length ? pickQuestions(initialPool, state, initial.count) : null));
   const [runId, setRunId] = useState(0);
   const pool = useMemo(() => filterQuestions(state, toFilter(setup)), [state, setup]);
+  const unlearned = useMemo(() => (setup.learnedOnly ? filterQuestions(state, { ...toFilter(setup), learnedOnly: false }).length - pool.length : 0), [state, setup, pool]);
 
   const start = (qs?: Question[]) => {
     setRun(qs ?? pickQuestions(pool, state, setup.count));
     setRunId((x) => x + 1);
   };
 
+  if (learnFirst && query.sub) {
+    return (
+      <LearnFirst
+        sub={query.sub}
+        onAnyway={() => {
+          const s = { ...setup, learnedOnly: false };
+          setSetup(s);
+          setLearnFirst(false);
+          setRun(pickQuestions(filterQuestions(state, toFilter(s)), state, s.count));
+          setRunId((x) => x + 1);
+        }}
+      />
+    );
+  }
   if (run) return <QuizRun key={runId} questions={run} setup={setup} onRestart={start} onSetup={() => setRun(null)} />;
-  return <QuizSetup setup={setup} setSetup={setSetup} available={pool.length} onStart={() => start()} />;
+  return <QuizSetup setup={setup} setSetup={setSetup} available={pool.length} unlearned={unlearned} onStart={() => start()} />;
 }
 
-function QuizSetup({ setup, setSetup, available, onStart }: { setup: Setup; setSetup: (s: Setup) => void; available: number; onStart: () => void }) {
+function LearnFirst({ sub, onAnyway }: { sub: string; onAnyway: () => void }) {
+  const title = getSubtopic(sub)?.title;
+  return (
+    <div className="page page-narrow">
+      <header className="page-head">
+        <span className="eyebrow">Quiz · {title}</span>
+        <h1>Erst lernen, dann üben</h1>
+        <p className="lead">
+          Zu „{title}“ hast du im Lernmodus noch keinen Abschnitt abgeschlossen. Die Fragen bauen auf den Erklärungen dort auf – lies sie zuerst,
+          dann kannst du sie auch beantworten.
+        </p>
+      </header>
+      <div className="row">
+        <Link to={`/lernen/${sub}`} className="btn btn-primary btn-large">
+          Thema jetzt lernen <IconArrowRight />
+        </Link>
+        <button type="button" className="btn btn-ghost" onClick={onAnyway}>
+          Trotzdem Fragen stellen
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function QuizSetup({ setup, setSetup, available, unlearned, onStart }: { setup: Setup; setSetup: (s: Setup) => void; available: number; unlearned: number; onStart: () => void }) {
   const scopeId = useId();
   const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
   return (
@@ -71,7 +117,7 @@ function QuizSetup({ setup, setSetup, available, onStart }: { setup: Setup; setS
       <header className="page-head">
         <span className="eyebrow">Quiz</span>
         <h1>Fragen üben</h1>
-        <p className="lead">Wähle Thema, Schwierigkeit und Fragetypen. Fragen, die dir schwerfallen, kommen bevorzugt dran.</p>
+        <p className="lead">Übe, was du im Lernmodus gelernt hast. Fragen, die dir schwerfallen, kommen bevorzugt dran – und zu jeder Frage kannst du die Erklärung nachlesen.</p>
       </header>
 
       <div className="card stack">
@@ -120,6 +166,10 @@ function QuizSetup({ setup, setSetup, available, onStart }: { setup: Setup; setS
         </fieldset>
 
         <label className="row" style={{ gap: 10 }}>
+          <input type="checkbox" className="checkbox" checked={setup.learnedOnly} onChange={(e) => setSetup({ ...setup, learnedOnly: e.target.checked })} />
+          <span>Nur Fragen zu Abschnitten, die ich im Lernmodus schon gelernt habe <span className="faint">(empfohlen)</span></span>
+        </label>
+        <label className="row" style={{ gap: 10 }}>
           <input type="checkbox" className="checkbox" checked={setup.mistakes} onChange={(e) => setSetup({ ...setup, mistakes: e.target.checked })} />
           <span>Nur Fragen, die ich zuletzt nicht (ganz) richtig hatte</span>
         </label>
@@ -130,8 +180,17 @@ function QuizSetup({ setup, setSetup, available, onStart }: { setup: Setup; setS
           </div>
         )}
 
+        {setup.learnedOnly && available === 0 && (
+          <p className="notice">
+            Du hast in dieser Auswahl noch keinen Abschnitt gelernt. <Link to="/lernpfad">Zum Lernpfad</Link> – oder nimm das Häkchen bei
+            „Nur Gelerntes“ heraus.
+          </p>
+        )}
         <div className="row-between">
-          <span className="muted num">{available} passende Fragen</span>
+          <span className="muted num">
+            {available} passende Fragen
+            {unlearned > 0 && <span className="faint"> · {unlearned} weitere nach dem Lernen</span>}
+          </span>
           <button type="button" className="btn btn-primary btn-large" disabled={!available} onClick={onStart}>
             Quiz starten <IconArrowRight />
           </button>

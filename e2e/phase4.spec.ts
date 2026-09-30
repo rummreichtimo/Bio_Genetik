@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
+import { startLearned } from './helpers';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
-  await page.evaluate(() => localStorage.clear());
-  await page.reload();
+  // Quiz, Karten und Prüfung fragen nur Gelerntes ab → alle Themen als gelernt markieren
+  await startLearned(page);
 });
 
 test('Karteikarten: umdrehen, bewerten, nicht gewusste Karte kommt wieder', async ({ page }) => {

@@ -1,6 +1,7 @@
 import { CHAPTERS, QUESTIONS, isTaskPart } from '../content';
 import type { ErrorTag, Level, Question, QuestionType } from '../content/types';
 import type { ProgressState } from '../progress/types';
+import { isQuestionLearned } from './learned';
 
 export interface QuizFilter {
   subs?: string[];
@@ -12,6 +13,8 @@ export interface QuizFilter {
   err?: ErrorTag;
   /** Klausur-Teilaufgaben einschließen */
   includeTaskParts?: boolean;
+  /** nur Fragen zu Abschnitten, die im Lernmodus schon abgeschlossen sind */
+  learnedOnly?: boolean;
 }
 
 export function filterQuestions(state: ProgressState, f: QuizFilter): Question[] {
@@ -21,6 +24,7 @@ export function filterQuestions(state: ProgressState, f: QuizFilter): Question[]
     if (f.levels?.length && !f.levels.includes(q.level)) return false;
     if (f.types?.length && !f.types.includes(q.type)) return false;
     if (f.err && q.err !== f.err) return false;
+    if (f.learnedOnly && !isQuestionLearned(state, q.id)) return false;
     if (f.mistakes) {
       const st = state.q[q.id];
       if (!st || st.last === 'correct') return false;
@@ -51,8 +55,8 @@ export function pickQuestions(pool: Question[], state: ProgressState, count: num
 }
 
 /** Gemischte Auswahl über alle Themen (für den Prüfungsmodus): möglichst gleichmäßig über Kapitel verteilt. */
-export function pickMixed(state: ProgressState, count: number, levels: Level[] = [2, 3, 4, 5], rnd = Math.random): Question[] {
-  const byChapter = CHAPTERS.map((c) => filterQuestions(state, { subs: c.subtopics, levels }).sort(() => rnd() - 0.5));
+export function pickMixed(state: ProgressState, count: number, levels: Level[] = [2, 3, 4, 5], rnd = Math.random, learnedOnly = false): Question[] {
+  const byChapter = CHAPTERS.map((c) => filterQuestions(state, { subs: c.subtopics, levels, learnedOnly }).sort(() => rnd() - 0.5));
   const out: Question[] = [];
   let i = 0;
   while (out.length < count && byChapter.some((l) => l.length)) {

@@ -647,6 +647,9 @@ export const regulation: ContentPack = {
     {
       id: 'ep-q13', sub: 'epigenetik', type: 'match', level: 3, err: 'inheritance', prov: 'inf', src: [p(21, 'Material B')],
       prompt: 'Wie viele Barr-Körperchen haben die Personen?',
+      material: [
+        { kind: 'text', md: 'Die Anzahl der Geschlechtschromosomen kann bei bestimmten Personen von der Regel abweichen. Beim **Triple-X-Syndrom** besitzt die Frau drei X-Chromosomen, beim **Turner-Syndrom** nur ein X-Chromosom. Beim **Klinefelter-Syndrom** weist der Mann ein Y- und zwei X-Chromosomen auf. *(PDF S. 21, Material B, Aufgabe 2)*' },
+      ],
       pairs: [
         { left: 'Frau (XX)', right: '1' },
         { left: 'Mann (XY)', right: '0' },

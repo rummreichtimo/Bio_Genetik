@@ -23,6 +23,8 @@ export function Exam() {
   const { state, updateSettings } = useProgress();
   const s = state.settings;
   const [run, setRun] = useState<{ qs: Question[]; started: number } | null>(null);
+  const [learnedOnly, setLearnedOnly] = useState(true);
+  const available = pickMixed(state, 999, undefined, undefined, learnedOnly).length;
   if (run) return <ExamRun key={run.started} questions={run.qs} started={run.started} limitMin={s.examTimed ? s.examMinutes : null} onExit={() => setRun(null)} />;
   const last = state.exams[state.exams.length - 1];
   return (
@@ -30,7 +32,7 @@ export function Exam() {
       <header className="page-head">
         <span className="eyebrow">Prüfungsmodus</span>
         <h1>Wie in der Klausur</h1>
-        <p className="lead">Gemischte Fragen aus allen Themen, ab Stufe 🟡 Verständnis. Keine Hinweise, keine Lösungen zwischendurch – die Auswertung kommt erst am Ende.</p>
+        <p className="lead">Gemischte Fragen aus deinen gelernten Themen, ab Stufe 🟡 Verständnis. Keine Hinweise, keine Lösungen zwischendurch – die Auswertung kommt erst am Ende.</p>
       </header>
       <div className="card stack">
         <fieldset className="chip-field">
@@ -55,7 +57,24 @@ export function Exam() {
             </div>
           </fieldset>
         )}
-        <button type="button" className="btn btn-primary btn-large" onClick={() => setRun({ qs: pickMixed(state, s.examCount), started: Date.now() })}>
+        <label className="row" style={{ gap: 10 }}>
+          <input type="checkbox" className="checkbox" checked={learnedOnly} onChange={(e) => setLearnedOnly(e.target.checked)} />
+          <span>Nur Themen, die ich schon gelernt habe <span className="faint">(empfohlen)</span></span>
+        </label>
+        {learnedOnly && available < s.examCount && (
+          <p className="notice">
+            {available === 0
+              ? 'Du hast noch keinen Abschnitt gelernt, zu dem es Prüfungsfragen gibt. '
+              : `Zu deinen gelernten Abschnitten gibt es erst ${available} Prüfungsfragen – die Prüfung wird kürzer. `}
+            <Link to="/lernpfad">Weiterlernen im Lernpfad</Link>
+          </p>
+        )}
+        <button
+          type="button"
+          className="btn btn-primary btn-large"
+          disabled={available === 0}
+          onClick={() => setRun({ qs: pickMixed(state, s.examCount, undefined, undefined, learnedOnly), started: Date.now() })}
+        >
           Prüfung starten <IconArrowRight />
         </button>
         {last && <p className="faint" style={{ margin: 0, fontSize: 'var(--fs-sm)' }}>Letzte Prüfung: {Math.round(last.score * 100)} % ({state.exams.length} insgesamt)</p>}
