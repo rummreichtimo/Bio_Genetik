@@ -10,6 +10,7 @@ import { Inline, Markdown } from '../ui/Markdown';
 import { MaterialView } from '../ui/Material';
 import { WidgetView } from '../widgets';
 import { AiPanel } from './AiPanel';
+import { optionOrder } from '../learning/shuffle';
 import { ReadUp } from './ReadUp';
 import { sectionOfQuestion } from '../content';
 import type { AiGrade } from '../ai/gradePrompt';
@@ -185,16 +186,19 @@ function mark(g: Grade | null, i: number): string {
 }
 
 function QuestionInput({ q, resp, setResp, disabled, grade: g }: InputProps) {
+  // bei jedem Anzeigen neu gemischt (Werte bleiben die Original-Indizes)
+  const order = useMemo(() => (q.type === 'single' || q.type === 'multi' ? optionOrder(q.options) : []), [q]);
   switch (q.type) {
     case 'single':
       return (
         <div className="options" role="radiogroup" aria-label="Antwortmöglichkeiten">
-          {q.options.map((o, i) => {
+          {order.map((i, pos) => {
+            const o = q.options[i];
             const chosen = resp?.type === 'single' && resp.value === i;
             const state = g ? (i === q.answer ? 'is-right' : chosen ? 'is-wrong' : '') : '';
             return (
               <button key={i} type="button" role="radio" aria-checked={chosen} disabled={disabled} className={`option ${chosen ? 'is-chosen' : ''} ${state}`} onClick={() => setResp({ type: 'single', value: i })}>
-                <span className="option-key" aria-hidden="true">{String.fromCharCode(65 + i)}</span>
+                <span className="option-key" aria-hidden="true">{String.fromCharCode(65 + pos)}</span>
                 <span className="option-text"><Inline text={o} /></span>
               </button>
             );
@@ -206,7 +210,8 @@ function QuestionInput({ q, resp, setResp, disabled, grade: g }: InputProps) {
       return (
         <div className="options" role="group" aria-label="Mehrere Antworten möglich">
           <p className="faint" style={{ fontSize: 'var(--fs-xs)', margin: 0 }}>Mehrere Antworten können richtig sein.</p>
-          {q.options.map((o, i) => {
+          {order.map((i) => {
+            const o = q.options[i];
             const chosen = sel.includes(i);
             const state = g ? (q.answers.includes(i) ? 'is-right' : chosen ? 'is-wrong' : '') : '';
             return (
